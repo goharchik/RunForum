@@ -1,0 +1,1777 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RunForum</title>
+<meta name="description" content="Общаемся на любые темы">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%2345678C'/%3E%3Cpath d='M4 3h8v2H6v2h5v2H6v4H4z' fill='%23fff'/%3E%3C/svg%3E">
+<style id="forum-style">
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:#DDE2E8;color:#111;font:12px/1.45 Verdana,Tahoma,Arial,Helvetica,sans-serif}
+a{color:#1D4A78;text-decoration:none}
+a:hover{text-decoration:underline}
+[hidden]{display:none!important}
+img{max-width:100%}
+code{font:11px "Courier New",Courier,monospace;background:#F4F6F8;border:1px solid #C4CFDA;padding:0 3px}
+.mono{font-family:"Courier New",Courier,monospace}
+.small{font-size:11px}
+.gray{color:#555}
+.c{text-align:center}
+.nw{white-space:nowrap}
+.grow{flex:1}
+
+#wrap{max-width:980px;margin:14px auto 20px;background:#fff;border:1px solid #8DA2B8;padding:10px}
+.banner{display:flex;align-items:center;min-height:74px;padding:14px 18px;background:#45678C linear-gradient(#5C7EA3,#3A5B80);border:1px solid #2F4D6E}
+.logo{display:block;color:#fff!important;text-decoration:none!important}
+.logo-title{display:block;font:bold 24px/1.15 "Trebuchet MS",Verdana,sans-serif;letter-spacing:.5px;text-shadow:1px 1px 0 #22384F}
+.logo-desc{display:block;margin-top:4px;font-size:11px;font-style:italic;color:#DCE5EE}
+.navbar{display:flex;flex-wrap:wrap;align-items:center;gap:4px 16px;margin-top:6px;padding:5px 8px;border:1px solid #8DA2B8;background:#E3E9EF linear-gradient(#F2F5F8,#DCE3EA);font-size:11px;font-weight:bold}
+.nav-right{margin-left:auto;font-weight:normal}
+.crumbs{margin:12px 0 4px;font-size:11px;font-weight:bold;overflow-wrap:anywhere}
+.infoline{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 12px;margin-top:10px;font-size:11px;color:#333}
+.topic-title{margin:8px 0 4px;font:bold 17px/1.3 "Trebuchet MS",Verdana,sans-serif;overflow-wrap:anywhere}
+.sec-desc{margin-bottom:4px;font-size:11px;color:#333}
+.btnrow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:8px 0}
+.notice{margin:8px 0;padding:6px 9px;border:1px solid #8DA2B8;background:#F3F5F8;font-size:11px}
+.footer{margin-top:12px;padding:8px;border-top:1px solid #C4CFDA;text-align:center;font-size:10px;color:#555}
+
+/* таблицы */
+.tbl{width:100%;margin:10px 0;border-collapse:separate;border-spacing:1px;background:#8DA2B8}
+.tbl th{padding:5px 7px;background:#45678C linear-gradient(#6385AA,#41638A);color:#fff;font-size:11px;font-weight:bold;text-align:left;white-space:nowrap}
+.tbl th.c{text-align:center}
+.tbl td{padding:6px 7px;background:#F3F5F8;vertical-align:middle}
+.tbl tr.alt td{background:#E8EDF2}
+.tbl tr.cat td{background:#D2DBE5;color:#22384F;font-size:11px;font-weight:bold}
+.tbl tr.sub td{background:#DFE6ED;font-size:11px}
+.tbl tr.banned td{color:#777}
+.tbl td.ic{width:38px;padding:4px;text-align:center}
+.tbl td.num{width:70px;text-align:center}
+.cat .right{float:right;font-weight:normal}
+.ti{display:inline-block;vertical-align:middle}
+.t-title{font-weight:bold;overflow-wrap:anywhere}
+.t-desc{margin-top:2px;font-size:11px;color:#333;overflow-wrap:anywhere}
+.ss{display:none}
+.last{width:180px;font-size:11px}
+.empty-row{padding:16px!important;text-align:center;color:#333}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;margin:6px 0;font-size:11px;color:#333}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.row-text{font-size:11.5px;line-height:1.6}
+.row-text ol{margin:6px 0 2px 20px;padding:0}
+
+/* формы */
+.form-tbl td.lbl{width:190px;padding-top:9px;background:#E8EDF2;font-size:11px;font-weight:bold;vertical-align:top}
+.form-tbl td.actions{padding:7px;background:#DFE6ED;text-align:center}
+.form-tbl td.actions .btn{margin:0 2px}
+.inp{width:100%;max-width:420px;padding:3px 5px;border:1px solid #7F9DB9;border-radius:0;background:#fff;color:#111;font:12px Verdana,Tahoma,sans-serif}
+.inp.wide,textarea.inp{max-width:none}
+textarea.inp{resize:vertical;line-height:1.5}
+select.inp{width:auto;max-width:100%}
+.inp:focus{outline:1px solid #45678C}
+.check{display:inline-flex;align-items:center;gap:5px;font-size:11px;cursor:pointer}
+.newsec{display:flex;flex-direction:column;gap:4px;margin-top:6px}
+
+/* кнопки */
+.btn{display:inline-block;padding:3px 10px;border:1px solid #7F9DB9;border-radius:2px;background:#EEE linear-gradient(#FFFFFF,#E2E6EA);color:#111!important;font:bold 11px/1.4 Verdana,Tahoma,sans-serif;white-space:nowrap;text-decoration:none!important;cursor:pointer}
+.btn:hover{border-color:#45678C;background:#F6F8FA linear-gradient(#FFFFFF,#EBF0F5)}
+.btn:active{background:#E2E6EA}
+.btn:disabled{color:#888!important;cursor:default}
+.btn.main{border-color:#45678C;background:#DCE4EC linear-gradient(#FFFFFF,#CFDAE5)}
+.btn.on{border-color:#45678C;background:#CFDAE5}
+.btn-xs{padding:1px 6px;font-size:10px;font-weight:normal}
+
+/* сообщения */
+.posts td.p-author{width:170px;background:#E8EDF2;font-size:11px;vertical-align:top;overflow-wrap:anywhere}
+.posts tr.alt td.p-author{background:#DFE6ED}
+.posts td.p-msg{vertical-align:top}
+.p-name{font-size:12px;font-weight:bold}
+.p-rank{margin:1px 0 5px;font-size:10px;color:#333}
+.p-ava{display:block;width:80px;height:80px;margin:2px 0 6px;border:1px solid #8DA2B8;background:#fff;object-fit:cover}
+.p-info{font-size:10px;color:#333}
+.p-head{display:flex;flex-wrap:wrap;align-items:center;gap:2px 12px;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid #C4CFDA;font-size:10px;color:#333}
+.p-subj{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.p-tools{display:flex;gap:3px}
+.p-foot{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:14px;padding-top:5px;border-top:1px dashed #C4CFDA;font-size:10px;color:#333}
+.p-edit{display:flex;flex-direction:column;gap:6px}
+.modbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:6px;margin:4px 0 10px;font-size:11px}
+
+/* текст сообщений */
+.md{font-size:12.5px;line-height:1.55;overflow-wrap:anywhere}
+.md>:first-child{margin-top:0}
+.md>:last-child{margin-bottom:0}
+.md p,.md ul,.md ol,.md pre,.md table,.md details{margin:0 0 9px}
+.md img{max-width:100%;height:auto;border:0;cursor:pointer}
+.md blockquote{margin:4px 0 10px 14px;padding:5px 8px;border:1px solid #A9B8C8;background:#FAFBFC;font-size:11.5px}
+.md blockquote p{margin:0 0 4px}
+.md pre{padding:6px 8px;overflow:auto;border:1px solid #A9B8C8;background:#FAFBFC;font:11px/1.4 "Courier New",Courier,monospace}
+.md pre code{padding:0;border:0;background:none}
+.md h1,.md h2,.md h3{margin:12px 0 6px;font-family:"Trebuchet MS",Verdana,sans-serif}
+.md h1{font-size:17px}
+.md h2{font-size:15px}
+.md h3{font-size:13px}
+.md table{border-collapse:collapse}
+.md th,.md td{padding:3px 7px;border:1px solid #A9B8C8}
+.md hr{border:0;border-top:1px solid #C4CFDA}
+.md ul,.md ol{padding-left:22px}
+.md details{padding:4px 8px;border:1px dashed #8DA2B8;background:#FAFBFC}
+.md summary{font-size:11px;font-weight:bold;cursor:pointer}
+.md .anchor,.md .octicon{display:none}
+
+/* редактор */
+.editor{border:1px solid #7F9DB9;background:#fff}
+.editor.drag{outline:2px dashed #45678C;outline-offset:-2px}
+.ed-bar{display:flex;flex-wrap:wrap;justify-content:space-between;gap:3px;padding:3px;border-bottom:1px solid #A9B8C8;background:#E8EDF2}
+.ed-tools,.ed-tabs{display:flex;flex-wrap:wrap;gap:2px}
+.editor textarea{display:block;width:100%;min-height:110px;padding:5px 6px;border:0;outline:none;resize:vertical;background:#fff;font:12px/1.5 Verdana,Tahoma,sans-serif}
+.ed-preview{min-height:110px;padding:8px;background:#FAFBFC}
+.ed-attach{display:flex;flex-wrap:wrap;gap:4px;padding:4px;border-top:1px dashed #A9B8C8;background:#F3F5F8}
+.att{position:relative;display:grid;place-items:center;width:60px;height:60px;border:1px solid #8DA2B8;background:#fff;font-size:10px;color:#555}
+.att img{width:100%;height:100%;object-fit:cover}
+.att-x{position:absolute;top:1px;right:1px;width:16px;height:16px;padding:0;border:1px solid #7F9DB9;background:#fff;font:bold 10px/1 Verdana,sans-serif;cursor:pointer}
+
+/* установка */
+.log{margin:0;padding:0;list-style:none;font-size:11px}
+.log:empty{display:none}
+.log li{position:relative;padding:2px 0 2px 34px;overflow-wrap:anywhere}
+.log li::before{position:absolute;left:0;top:2px;font:bold 11px "Courier New",monospace}
+.log li.run::before{content:'[..]'}
+.log li.ok::before{content:'[ok]'}
+.log li.info::before{content:'[i]'}
+.log li.fail{font-weight:bold}
+.log li.fail::before{content:'[!!]'}
+.done{margin-top:8px;padding:10px;border:1px solid #8DA2B8;background:#F3F5F8}
+.done h3{margin:0 0 6px;font:bold 15px "Trebuchet MS",Verdana,sans-serif}
+.done ol{margin:6px 0 6px 20px;padding:0}
+
+/* окна и уведомления */
+#toasts{position:fixed;top:10px;left:50%;z-index:200;display:flex;flex-direction:column;gap:4px;width:min(440px,calc(100vw - 20px));transform:translateX(-50%);pointer-events:none}
+.toast{padding:7px 10px;border:1px solid #45678C;background:#F3F5F8;box-shadow:2px 2px 0 rgba(0,0,0,.2);font-size:11px;transition:opacity .4s}
+.toast.err{border:2px solid #22384F;font-weight:bold}
+.toast.out{opacity:0}
+.modal-back{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:10px;background:rgba(20,30,45,.55)}
+.win{display:flex;flex-direction:column;max-width:96vw;max-height:94vh;border:1px solid #2F4D6E;background:#fff;box-shadow:3px 3px 0 rgba(0,0,0,.3)}
+.win-title{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:3px 3px 3px 7px;background:#45678C linear-gradient(#6385AA,#41638A);color:#fff;font-size:11px;font-weight:bold}
+.win-x{width:18px;height:18px;padding:0;border:1px solid #fff;background:#41638A;color:#fff;font:bold 11px/1 Verdana,sans-serif;cursor:pointer}
+.win-body{overflow:auto;padding:4px;background:#E8EDF2}
+.win-body img{display:block;max-width:calc(96vw - 12px);max-height:calc(94vh - 40px)}
+
+@media (max-width:640px){
+  body{background:#fff}
+  #wrap{margin:0;padding:6px;border:0}
+  .banner{min-height:0;padding:10px 12px}
+  .logo-title{font-size:19px}
+  .nav-right{width:100%;margin-left:0}
+  .hs{display:none}
+  .ss{display:block}
+  .last{width:auto}
+  .inp{max-width:none}
+  .form-tbl,.form-tbl tbody,.form-tbl tr,.form-tbl td,.form-tbl th{display:block;width:auto!important}
+  .form-tbl{border:1px solid #8DA2B8;background:#F3F5F8}
+  .form-tbl td.lbl{padding:6px 7px 2px;background:#F3F5F8}
+  .posts,.posts tbody,.posts tr,.posts td{display:block;width:auto!important}
+  .posts{border-spacing:0;background:none}
+  .posts tr.posthead{display:none}
+  .posts tr{margin-bottom:6px;border:1px solid #8DA2B8}
+  .posts td.p-author{display:flex!important;flex-wrap:wrap;align-items:center;gap:2px 8px;padding:5px 7px}
+  .p-ava{order:-1;width:32px;height:32px;margin:0}
+  .p-rank{margin:0}
+  .p-info{display:none}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script id="forum-script">
+(function () {
+'use strict';
+
+/* =====================================================================
+   Форум в стиле 2000-х на GitHub Pages.
+   Один файл работает в двух режимах:
+   • установка (открыт с диска или с ?setup) — по токену создаёт репозиторий,
+     загружает в него сам себя как index.html и включает GitHub Pages;
+   • форум (опубликован рядом с forum-config.json) — темы = Issues,
+     ответы = комментарии, «спасибо» = реакции 👍, картинки = файлы в репозитории,
+     разделы участников = служебные Issues с пометкой type: section.
+   ===================================================================== */
+
+const API = 'https://api.github.com';
+const FULL = 'application/vnd.github.full+json';
+const IMG_REPO = 'forum-images';
+const MEDIA_BRANCH = 'media';
+const FAVICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%2345678C'/%3E%3Cpath d='M4 3h8v2H6v2h5v2H6v4H4z' fill='%23fff'/%3E%3C/svg%3E";
+const DEFAULT_CATS = ['Общение — разговоры обо всём', 'Новости — главное на форуме', 'Вопросы и ответы — спросите сообщество', 'Творчество — покажите свои работы', 'Флуд — болтовня без темы'].join('\n');
+// Метаданные лежат в HTML-комментарии в начале текста issue (последовательности
+// записаны с экранированием, чтобы не сбить HTML-парсер внутри тега script).
+const META_RE = /^\s*<!\-\-\s*forum\s*(\{[\s\S]*?\})\s*\-\->\s*/;
+const PERIODS = { week: 7, month: 30, all: 0 };
+const MONTHS = ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
+
+const S = { cfg: null, token: null, me: null, perms: null, posts: null, sections: [], postsAt: 0, seq: 0, cur: null, uploading: 0, liked: new Set(), imgRepoOk: false, back: '#/' };
+
+/* ---------- утилиты ---------- */
+const $ = (sel, root = document) => root.querySelector(sel);
+const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const reEsc = s => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const cut = (s, n) => (s.length > n ? s.slice(0, n - 1) + '…' : s);
+const fv = (f, name) => { const el = f.elements.namedItem(name); return el && 'value' in el ? el.value : ''; };
+const store = {
+  get: k => { try { return localStorage.getItem(k); } catch (e) { return null; } },
+  set: (k, v) => { try { localStorage.setItem(k, v); } catch (e) { /* приватный режим */ } },
+  del: k => { try { localStorage.removeItem(k); } catch (e) { /* приватный режим */ } },
+};
+function plural(n, forms) {
+  const a = Math.abs(n) % 100, b = a % 10;
+  if (a > 10 && a < 20) return forms[2];
+  if (b === 1) return forms[0];
+  if (b > 1 && b < 5) return forms[1];
+  return forms[2];
+}
+function fmtDate(iso) {
+  const d = new Date(iso), now = new Date();
+  const hm = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+  const days = Math.round((new Date(now.getFullYear(), now.getMonth(), now.getDate()) - new Date(d.getFullYear(), d.getMonth(), d.getDate())) / 864e5);
+  if (days === 0) return 'Сегодня, ' + hm;
+  if (days === 1) return 'Вчера, ' + hm;
+  return `${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}, ${hm}`;
+}
+function b64utf8(str) {
+  const bytes = new TextEncoder().encode(str);
+  let bin = '';
+  for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+  return btoa(bin);
+}
+function fromB64utf8(b64) {
+  const bin = atob(String(b64).replace(/\s/g, ''));
+  return new TextDecoder().decode(Uint8Array.from(bin, c => c.charCodeAt(0)));
+}
+function blobToB64(blob) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(String(r.result).split(',')[1] || '');
+    r.onerror = () => reject(r.error);
+    r.readAsDataURL(blob);
+  });
+}
+const TR = { а: 'a', б: 'b', в: 'v', г: 'g', д: 'd', е: 'e', ё: 'e', ж: 'zh', з: 'z', и: 'i', й: 'y', к: 'k', л: 'l', м: 'm', н: 'n', о: 'o', п: 'p', р: 'r', с: 's', т: 't', у: 'u', ф: 'f', х: 'h', ц: 'c', ч: 'ch', ш: 'sh', щ: 'sch', ъ: '', ы: 'y', ь: '', э: 'e', ю: 'yu', я: 'ya' };
+function slugify(s) {
+  return String(s).toLowerCase().split('').map(c => (TR[c] !== undefined ? TR[c] : c)).join('')
+    .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40);
+}
+// «Название — описание» по строке; эмодзи в начале строки отбрасываются.
+function parseCats(text) {
+  const used = new Set();
+  return String(text).split('\n').map(l => l.trim()).filter(Boolean).map((line, i) => {
+    line = line.replace(/^[\p{Extended_Pictographic}️‍\s]+/u, '');
+    const parts = line.split(/\s+[—–-]\s+/);
+    const name = (parts.shift() || '').trim() || 'Раздел ' + (i + 1);
+    let id = slugify(name) || 'cat-' + (i + 1);
+    while (used.has(id) || /^s\d+$/.test(id) || id === 'other') id += '-' + (i + 1);
+    used.add(id);
+    return { id, name, desc: parts.join(' — ').trim() };
+  });
+}
+
+/* ---------- значки в духе phpBB, одним цветом ---------- */
+const ICO = (() => {
+  const page = (fill, line) => `<path d="M4.5 1.5h9.5l4 4v15h-13.5z" fill="${fill}" stroke="#4A6C91"/><path d="M14 1.5v4h4" fill="none" stroke="#4A6C91"/><path d="M7 9h8.5M7 12h8.5M7 15h5.5" stroke="${line}"/>`;
+  const wrap = (inner, t) => `<svg class="ti" viewBox="0 0 22 22" width="22" height="22" role="img" aria-label="${t}"><title>${t}</title>${inner}</svg>`;
+  return {
+    topic: wrap(page('#F7F9FB', '#9AAEC3'), 'Тема'),
+    hot: wrap(page('#C3D1E0', '#4A6C91'), 'Популярная тема'),
+    sticky: wrap(page('#F7F9FB', '#9AAEC3') + '<rect x="0.5" y="11.5" width="9" height="10" fill="#4A6C91"/><path d="M5 13.5v4.2M5 19v1.2" stroke="#fff" stroke-width="1.6"/>', 'Важная тема'),
+    locked: wrap(page('#E4E9EF', '#9AAEC3') + '<rect x="0.5" y="15" width="9" height="6.5" fill="#4A6C91"/><path d="M2.5 15v-2.2a2.5 2.5 0 0 1 5 0V15" fill="none" stroke="#4A6C91" stroke-width="1.5"/>', 'Закрытая тема'),
+    folder: '<svg class="ti" viewBox="0 0 28 22" width="28" height="22" aria-hidden="true"><path d="M1.5 3.5h9l2.2 2.5h13.8v14.5h-25z" fill="#DCE4EC" stroke="#4A6C91"/><path d="M1.5 8.5h25" stroke="#4A6C91"/></svg>',
+  };
+})();
+
+/* ---------- GitHub API ---------- */
+class GhError extends Error {
+  constructor(status, data, headers) { super(ghMessage(status, data, headers)); this.status = status; this.data = data; }
+}
+function ghMessage(status, data, headers) {
+  const m = (data && data.message) || '';
+  if (status === 0) return 'Нет связи с GitHub. Проверьте интернет.';
+  if (status === 401) return 'Токен недействителен или отозван. Войдите заново.';
+  if ((status === 403 || status === 429) && headers && headers.get('x-ratelimit-remaining') === '0') {
+    const reset = Number(headers.get('x-ratelimit-reset')) * 1000;
+    const mins = Math.max(1, Math.ceil((reset - Date.now()) / 60000));
+    return `Исчерпан лимит запросов к GitHub. ${S.token ? '' : 'Войдите, чтобы лимит стал больше, или '}подождите ~${mins} мин.`;
+  }
+  if (status === 403) return 'Нет прав на это действие' + (m ? ` (${m})` : '');
+  if (status === 404) return 'Не найдено' + (m && m !== 'Not Found' ? ` (${m})` : '');
+  if (status === 410) return 'В репозитории выключены Issues.';
+  if (status === 422) {
+    const det = data && Array.isArray(data.errors) ? data.errors.map(e => e.message || e.code).filter(Boolean).join('; ') : '';
+    return 'GitHub отклонил запрос: ' + (det || m || 'ошибка данных');
+  }
+  return `Ошибка GitHub ${status}${m ? ': ' + m : ''}`;
+}
+async function gh(path, opt = {}) {
+  const { method = 'GET', body, accept = 'application/vnd.github+json', raw = false } = opt;
+  const token = 'token' in opt ? opt.token : S.token;
+  const headers = { Accept: accept };
+  if (token) headers.Authorization = 'Bearer ' + token;
+  if (body !== undefined) headers['Content-Type'] = 'application/json';
+  let res;
+  try {
+    // no-cache: браузер переспросит GitHub через ETag, а ответ 304 не тратит лимит запросов
+    res = await fetch(/^https?:/.test(path) ? path : API + path, { method, headers, body: body === undefined ? undefined : JSON.stringify(body), cache: method === 'GET' ? 'no-cache' : 'no-store' });
+  } catch (e) { throw new GhError(0, null); }
+  if (raw) return res;
+  if (res.status === 204) return null;
+  const text = await res.text();
+  let data = null;
+  try { data = text ? JSON.parse(text) : null; } catch (e) { data = text; }
+  if (!res.ok) throw new GhError(res.status, data, res.headers);
+  return data;
+}
+async function retry(fn, tries = 4, delay = 1500) {
+  for (let i = 0; ; i++) {
+    try { return await fn(); } catch (e) {
+      const transient = e.status === 0 || e.status === 404 || e.status === 409 || e.status >= 500;
+      if (i >= tries - 1 || !transient) throw e;
+      await sleep(delay * (i + 1));
+    }
+  }
+}
+async function putFile({ owner, repo, path, content, message, branch, token, keep }) {
+  const url = `/repos/${owner}/${repo}/contents/${path}`;
+  let sha;
+  try { sha = (await gh(`${url}?ref=${encodeURIComponent(branch)}`, { token })).sha; } catch (e) { if (e.status !== 404) throw e; }
+  if (sha && keep) return null;
+  return retry(() => gh(url, { method: 'PUT', token, body: { message, content, branch, sha } }));
+}
+async function ensureBranch(owner, repo, branch, token) {
+  try { await gh(`/repos/${owner}/${repo}/git/ref/heads/${branch}`, { token }); return; } catch (e) { if (e.status !== 404) throw e; }
+  const info = await gh(`/repos/${owner}/${repo}`, { token });
+  const base = await gh(`/repos/${owner}/${repo}/git/ref/heads/${info.default_branch}`, { token });
+  try {
+    await gh(`/repos/${owner}/${repo}/git/refs`, { method: 'POST', token, body: { ref: `refs/heads/${branch}`, sha: base.object.sha } });
+  } catch (e) { if (e.status !== 422) throw e; /* ветка уже есть */ }
+}
+const R = () => `/repos/${S.cfg.owner}/${S.cfg.repo}`;
+
+/* ---------- модель: темы и разделы ---------- */
+function splitMeta(body) {
+  let text = body || '', meta = {};
+  const m = text.match(META_RE);
+  if (m) { try { meta = JSON.parse(m[1]) || {}; } catch (e) { meta = {}; } text = text.slice(m[0].length); }
+  return { meta, text };
+}
+const joinMeta = (meta, text) => '<!' + '-- forum ' + JSON.stringify(meta) + ' --' + '>\n' + text;
+function toPost(i) {
+  const { meta, text } = splitMeta(i.body);
+  const r = i.reactions || {};
+  return {
+    num: i.number, title: i.title, text, cat: meta.cat || null,
+    isSection: meta.type === 'section', desc: meta.desc || '',
+    author: i.user ? i.user.login : 'ghost', avatar: i.user ? i.user.avatar_url : '',
+    created: i.created_at, updated: i.updated_at, comments: i.comments || 0,
+    likes: (r['+1'] || 0) + (r.heart || 0),
+    pinned: (i.labels || []).some(l => (typeof l === 'string' ? l : l.name) === 'pinned'),
+    locked: !!i.locked, state: i.state, html: i.body_html || '',
+  };
+}
+const isBanned = login => !!login && (S.cfg.banned || []).some(b => b.toLowerCase() === String(login).toLowerCase());
+const isAdminUser = login => !!login && !!S.cfg.admin && String(login).toLowerCase() === S.cfg.admin.toLowerCase();
+const amAdmin = () => !!S.me && (isAdminUser(S.me.login) || !!(S.perms && S.perms.admin));
+const canModerate = () => !!S.me && (amAdmin() || !!(S.perms && (S.perms.push || S.perms.maintain || S.perms.triage)));
+const canPush = () => !!(S.perms && (S.perms.push || S.perms.admin));
+const canCreateSection = () => !!S.me && !isBanned(S.me.login) && (S.cfg.allowUserSections !== false || amAdmin());
+
+// Официальные разделы — из forum-config.json, разделы участников — служебные issues.
+function allSections() {
+  const official = (S.cfg.categories || []).map(c => ({ id: c.id, name: c.name, desc: c.desc || '', official: true }));
+  const users = (S.sections || []).filter(s => amAdmin() || !isBanned(s.author))
+    .map(s => ({ id: 's' + s.num, num: s.num, name: s.title, desc: s.desc, author: s.author, created: s.created, official: false }));
+  return [...official, ...users];
+}
+const catById = id => (id ? allSections().find(c => c.id === id) : undefined);
+const OTHER = { id: 'other', name: 'Разное', desc: 'Темы без раздела', official: true };
+
+async function loadPosts(force) {
+  if (!force && S.posts && Date.now() - S.postsAt < 60000) return S.posts;
+  const all = [];
+  for (let page = 1; page <= 5; page++) {
+    const batch = await gh(`${R()}/issues?state=open&per_page=100&page=${page}`);
+    all.push(...batch);
+    if (batch.length < 100) break;
+  }
+  const items = all.filter(i => !i.pull_request).map(toPost);
+  S.sections = items.filter(p => p.isSection).sort((a, b) => new Date(a.created) - new Date(b.created));
+  S.posts = items.filter(p => !p.isSection);
+  S.postsAt = Date.now();
+  return S.posts;
+}
+const visiblePosts = () => (S.posts || []).filter(p => amAdmin() || !isBanned(p.author));
+async function loadComments(num) {
+  const all = [];
+  for (let page = 1; page <= 10; page++) {
+    const batch = await gh(`${R()}/issues/${num}/comments?per_page=100&page=${page}`, { accept: FULL });
+    all.push(...batch);
+    if (batch.length < 100) break;
+  }
+  return all;
+}
+async function myReactionId(num) {
+  const list = await gh(`${R()}/issues/${num}/reactions?content=%2B1&per_page=100`);
+  const mine = list.find(r => r.user && r.user.login === S.me.login);
+  return mine ? mine.id : null;
+}
+// POST реакции возвращает 200, если она уже стояла — тогда снимаем её (переключатель).
+async function toggleReaction(base) {
+  const res = await gh(base, { method: 'POST', body: { content: '+1' }, raw: true });
+  const data = await res.json().catch(() => null);
+  if (!res.ok) throw new GhError(res.status, data, res.headers);
+  if (res.status === 200 && data && data.id) { await gh(`${base}/${data.id}`, { method: 'DELETE' }); return false; }
+  return true;
+}
+async function createSection(name, desc) {
+  if (!canCreateSection()) throw new Error('Создание разделов отключено администратором.');
+  await loadPosts(true);
+  const exist = allSections().find(c => c.name.toLowerCase() === name.toLowerCase());
+  if (exist) return exist;
+  const body = joinMeta({ type: 'section', desc }, `Служебная запись раздела форума «${name}».${desc ? '\n\n' + desc : ''}\n\nТемы этого раздела — отдельные issues.`);
+  const i = await gh(`${R()}/issues`, { method: 'POST', body: { title: name, body } });
+  S.postsAt = 0;
+  return { id: 's' + i.number, name };
+}
+
+const pop = p => p.likes * 3 + p.comments * 2;
+const isHot = p => p.comments >= 15 || p.likes >= 15;
+const SORTS = {
+  popular: (a, b) => pop(b) - pop(a) || new Date(b.created) - new Date(a.created),
+  new: (a, b) => new Date(b.created) - new Date(a.created),
+  discussed: (a, b) => b.comments - a.comments || new Date(b.updated) - new Date(a.updated),
+};
+function sortPosts(posts, tab, period) {
+  const days = PERIODS[period] || 0;
+  let list = posts.slice();
+  if (tab === 'popular' && days) { const from = Date.now() - days * 864e5; list = list.filter(p => new Date(p.created) >= from); }
+  return list.sort(SORTS[tab] || SORTS.popular);
+}
+const topicsBy = login => visiblePosts().filter(p => p.author === login).length;
+const thanksTo = login => visiblePosts().filter(p => p.author === login).reduce((s, p) => s + p.likes, 0);
+function rankOf(login) {
+  if (isAdminUser(login)) return 'Администратор';
+  if (isBanned(login)) return 'Заблокирован';
+  const n = topicsBy(login);
+  return n >= 20 ? 'Ветеран форума' : n >= 10 ? 'Завсегдатай' : n >= 3 ? 'Участник' : 'Новичок';
+}
+
+/* ---------- картинки ---------- */
+function loadImage(file) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => { resolve(img); setTimeout(() => URL.revokeObjectURL(url), 2000); };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('не удалось прочитать картинку')); };
+    img.src = url;
+  });
+}
+const canvasBlob = (c, type, q) => new Promise(r => c.toBlob(r, type, q));
+async function prepareImage(file) {
+  if (file.type === 'image/gif') {
+    if (file.size > 10e6) throw new Error('GIF больше 10 МБ');
+    return { blob: file, ext: 'gif' };
+  }
+  const img = await loadImage(file);
+  const w0 = img.naturalWidth || 1, h0 = img.naturalHeight || 1, MAX = 1920;
+  const k = Math.min(1, MAX / Math.max(w0, h0));
+  const exts = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' };
+  if (k === 1 && file.size <= 1.5e6 && exts[file.type]) return { blob: file, ext: exts[file.type] };
+  const c = document.createElement('canvas');
+  c.width = Math.max(1, Math.round(w0 * k)); c.height = Math.max(1, Math.round(h0 * k));
+  const ctx = c.getContext('2d');
+  ctx.drawImage(img, 0, 0, c.width, c.height);
+  if (file.type === 'image/png') {
+    const png = await canvasBlob(c, 'image/png');
+    if (png && png.size <= 2e6) return { blob: png, ext: 'png' };
+  }
+  ctx.globalCompositeOperation = 'destination-over';
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, c.width, c.height);
+  const jpg = await canvasBlob(c, 'image/jpeg', 0.86);
+  if (!jpg) throw new Error('не удалось сжать картинку');
+  return { blob: jpg, ext: 'jpg' };
+}
+async function ensureImageRepo() {
+  if (S.imgRepoOk) return;
+  try { await gh(`/repos/${S.me.login}/${IMG_REPO}`); }
+  catch (e) {
+    if (e.status !== 404) throw e;
+    await gh('/user/repos', { method: 'POST', body: { name: IMG_REPO, description: 'Картинки для форумов на GitHub Pages', auto_init: true, has_issues: false, has_wiki: false, has_projects: false } });
+    toast(`Создан репозиторий ${S.me.login}/${IMG_REPO} для ваших картинок`);
+    await sleep(1500);
+  }
+  S.imgRepoOk = true;
+}
+// Картинки админа и модераторов — в ветку media репозитория форума (она не пересобирает сайт),
+// картинки остальных участников — в их собственный публичный репозиторий forum-images.
+async function uploadImage(file) {
+  const { blob, ext } = await prepareImage(file);
+  if (blob.size > 20e6) throw new Error('файл больше 20 МБ');
+  const content = await blobToB64(blob);
+  const d = new Date();
+  const name = `${d.getTime().toString(36)}-${Math.random().toString(36).slice(2, 7)}.${ext}`;
+  const message = `Картинка для форума от @${S.me.login}`;
+  if (canPush()) {
+    const branch = S.cfg.mediaBranch || MEDIA_BRANCH;
+    const path = `uploads/${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, '0')}/${name}`;
+    const put = () => gh(`${R()}/contents/${path}`, { method: 'PUT', body: { message, content, branch } });
+    let r;
+    try { r = await put(); }
+    catch (e) {
+      if (e.status !== 404 && e.status !== 422) throw e;
+      await ensureBranch(S.cfg.owner, S.cfg.repo, branch, S.token);
+      r = await retry(put);
+    }
+    return r.content.download_url;
+  }
+  await ensureImageRepo();
+  const r = await retry(() => gh(`/repos/${S.me.login}/${IMG_REPO}/contents/images/${name}`, { method: 'PUT', body: { message, content } }));
+  return r.content.download_url;
+}
+
+/* ---------- кирпичики интерфейса ---------- */
+function avatarUrl(u, s) { return u + (u.includes('?') ? '&' : '?') + 's=' + s; }
+const crumbs = (...parts) => `<div class="crumbs"><a href="#/">Список форумов ${esc(S.cfg.title)}</a>${parts.map(p => ' » ' + p).join('')}</div>`;
+const msgTable = (title, html) => `<table class="tbl"><tr><th>${esc(title)}</th></tr><tr><td class="empty-row">${html}</td></tr></table>`;
+const loadingTable = () => msgTable('Загрузка', 'Загрузка данных с GitHub…');
+const loginNeeded = text => msgTable('Требуется вход', `${esc(text)}<br><br><button class="btn main" data-action="login">Войти через GitHub</button>`);
+function topicIcon(p) { return p.locked ? ICO.locked : p.pinned ? ICO.sticky : isHot(p) ? ICO.hot : ICO.topic; }
+function sectionLink(p) {
+  const c = catById(p.cat) || OTHER;
+  return `<a href="#/c/${esc(c.id)}">${esc(c.name)}</a>`;
+}
+function topicRow(p, i, showSection) {
+  return `<tr class="${i % 2 ? 'alt' : ''}${isBanned(p.author) ? ' banned' : ''}">
+    <td class="ic">${topicIcon(p)}</td>
+    <td>${p.pinned ? '<b>Важно:</b> ' : ''}${p.locked ? '[Закрыта] ' : ''}<a class="t-title" href="#/p/${p.num}">${esc(p.title)}</a>
+      <div class="t-desc">Автор: <a href="#/u/${esc(p.author)}">${esc(p.author)}</a>${showSection ? ' · Раздел: ' + sectionLink(p) : ''}</div>
+      <span class="ss t-desc">Ответов: ${p.comments} · Спасибо: ${p.likes} · ${fmtDate(p.updated)}</span></td>
+    <td class="num hs">${p.comments}</td>
+    <td class="num hs">${p.likes}</td>
+    <td class="last hs">${fmtDate(p.updated)}</td>
+  </tr>`;
+}
+const topicHead = title => `<tr><th colspan="2">${title}</th><th class="c hs">Ответов</th><th class="c hs">Спасибо</th><th class="hs">Обновлено</th></tr>`;
+function topicTable(title, list, opts = {}) {
+  return `<table class="tbl">${topicHead(title)}${opts.sub ? `<tr class="sub"><td colspan="5">${opts.sub}</td></tr>` : ''}${list.length ? list.map((p, i) => topicRow(p, i, opts.showSection)).join('') : `<tr><td colspan="5" class="empty-row">${opts.empty || 'Тем нет.'}</td></tr>`}</table>`;
+}
+function sortLinks(base, tab, period) {
+  const link = (cond, href, label) => (cond ? `<b>${label}</b>` : `<a href="${href}">${label}</a>`);
+  const tabs = [['popular', 'Популярные'], ['new', 'Новые'], ['discussed', 'Обсуждаемые']].map(([id, l]) => link(tab === id, `${base}?tab=${id}`, l)).join(' · ');
+  const per = tab === 'popular' ? ' &nbsp;|&nbsp; За: ' + [['week', 'неделю'], ['month', 'месяц'], ['all', 'всё время']].map(([id, l]) => link(period === id, `${base}?tab=popular&period=${id}`, l)).join(' · ') : '';
+  return `Показать: ${tabs}${per}`;
+}
+function sectionStats(posts) {
+  const st = {};
+  posts.forEach(p => {
+    const id = catById(p.cat) ? p.cat : 'other';
+    const s = st[id] || (st[id] = { topics: 0, msgs: 0, last: null });
+    s.topics++;
+    s.msgs += 1 + p.comments;
+    if (!s.last || new Date(p.updated) > new Date(s.last.updated)) s.last = p;
+  });
+  return st;
+}
+function sectionRow(c, s, i) {
+  s = s || { topics: 0, msgs: 0, last: null };
+  return `<tr class="${i % 2 ? 'alt' : ''}">
+    <td class="ic">${ICO.folder}</td>
+    <td><a class="t-title" href="#/c/${esc(c.id)}">${esc(c.name)}</a>${c.desc ? `<div class="t-desc">${esc(c.desc)}</div>` : ''}${c.official ? '' : `<div class="t-desc gray">Создал: <a href="#/u/${esc(c.author)}">${esc(c.author)}</a></div>`}<span class="ss t-desc">Тем: ${s.topics} · Сообщений: ${s.msgs}</span></td>
+    <td class="num hs">${s.topics}</td>
+    <td class="num hs">${s.msgs}</td>
+    <td class="last hs">${s.last ? `<a href="#/p/${s.last.num}">${esc(cut(s.last.title, 38))}</a><br>${fmtDate(s.last.updated)}` : '<span class="gray">Нет тем</span>'}</td>
+  </tr>`;
+}
+function sectionsTable(posts) {
+  const st = sectionStats(posts);
+  const secs = allSections();
+  const official = secs.filter(c => c.official), users = secs.filter(c => !c.official);
+  const create = canCreateSection() ? '<span class="right"><a class="btn btn-xs" href="#/newsection">Создать раздел</a></span>' : '';
+  return `<table class="tbl">
+    <tr><th colspan="2">Форум</th><th class="c hs">Тем</th><th class="c hs">Сообщений</th><th class="hs">Последняя тема</th></tr>
+    ${official.length ? `<tr class="cat"><td colspan="5">Основные разделы</td></tr>${official.map((c, i) => sectionRow(c, st[c.id], i)).join('')}` : ''}
+    <tr class="cat"><td colspan="5">${create}Разделы участников — на любую тему</td></tr>
+    ${users.length ? users.map((c, i) => sectionRow(c, st[c.id], i)).join('') : `<tr><td colspan="5" class="empty-row">Пока нет. ${S.me ? 'Создайте раздел на любую тему — кнопка справа.' : '<a href="#/login" data-action="login">Войдите</a>, чтобы создать раздел на любую тему.'}</td></tr>`}
+    ${st.other ? `<tr class="cat"><td colspan="5">Прочее</td></tr>${sectionRow(OTHER, st.other, 0)}` : ''}
+  </table>`;
+}
+function legend() {
+  return `<div class="legend"><span>${ICO.topic} Тема</span><span>${ICO.hot} Популярная тема</span><span>${ICO.sticky} Важная тема</span><span>${ICO.locked} Тема закрыта</span></div>`;
+}
+function editorHTML(value = '', opts = {}) {
+  const { rows = 8 } = opts;
+  const b = (md, label, title) => `<button type="button" class="btn btn-xs" data-md="${md}" title="${title}">${label}</button>`;
+  return `<div class="editor">
+    <div class="ed-bar">
+      <div class="ed-tools">${b('bold', '<b>B</b>', 'Жирный (Ctrl+B)')}${b('italic', '<i>i</i>', 'Курсив (Ctrl+I)')}${b('strike', '<s>S</s>', 'Зачёркнутый')}${b('quote', 'Цитата', 'Цитата')}${b('code', 'Код', 'Код')}${b('link', 'Ссылка', 'Ссылка')}${b('list', 'Список', 'Список')}${b('spoiler', 'Спойлер', 'Спойлер')}<label class="btn btn-xs" title="Прикрепить картинку">Картинка…<input type="file" accept="image/*" multiple hidden></label></div>
+      <div class="ed-tabs"><button type="button" class="btn btn-xs ed-tab on" data-ed="write">Текст</button><button type="button" class="btn btn-xs ed-tab" data-ed="preview">Предпросмотр</button></div>
+    </div>
+    <textarea rows="${rows}" aria-label="Текст сообщения">${esc(value)}</textarea>
+    <div class="ed-preview md" hidden></div>
+    <div class="ed-attach" hidden></div>
+  </div>`;
+}
+const EDITOR_HINT = '<div class="small gray" style="font-weight:normal;margin-top:4px">Можно Markdown. Картинки — кнопкой, Ctrl+V или перетаскиванием. Ctrl+Enter — отправить.</div>';
+
+/* ---------- окна и уведомления ---------- */
+function toast(msg, type = 'ok') {
+  let box = $('#toasts');
+  if (!box) { box = document.createElement('div'); box.id = 'toasts'; document.body.appendChild(box); }
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  t.textContent = (type === 'err' ? 'Ошибка: ' : '') + msg;
+  box.appendChild(t);
+  setTimeout(() => t.classList.add('out'), type === 'err' ? 6000 : 3500);
+  setTimeout(() => t.remove(), type === 'err' ? 6500 : 4000);
+}
+function showImage(src) {
+  closeModal();
+  const back = document.createElement('div');
+  back.className = 'modal-back';
+  back.innerHTML = `<div class="win" role="dialog" aria-modal="true"><div class="win-title"><span>Просмотр изображения</span><button type="button" class="win-x" data-action="close-modal" aria-label="Закрыть">x</button></div><div class="win-body"><img src="${esc(src)}" alt=""></div></div>`;
+  back.addEventListener('mousedown', e => { if (e.target === back) closeModal(); });
+  document.body.appendChild(back);
+}
+function closeModal() { $$('.modal-back').forEach(m => m.remove()); }
+
+/* ---------- вход ---------- */
+const tokKey = () => `forum_token:${S.cfg.owner}/${S.cfg.repo}`;
+const draftKey = () => `forum_draft:${S.cfg.owner}/${S.cfg.repo}`;
+function openLogin() {
+  if (!location.hash.startsWith('#/login')) S.back = location.hash || '#/';
+  location.hash = '#/login';
+}
+async function login(token, silent) {
+  const res = await gh('/user', { token, raw: true });
+  const data = await res.json().catch(() => null);
+  if (!res.ok) throw new GhError(res.status, data, res.headers);
+  const scopes = res.headers.get('x-oauth-scopes');
+  let perms = null;
+  try { perms = (await gh(R(), { token })).permissions || null; } catch (e) { /* без прав на репозиторий */ }
+  S.token = token;
+  S.me = { login: data.login, avatar: data.avatar_url, name: data.name };
+  S.perms = perms;
+  S.imgRepoOk = false;
+  store.set(tokKey(), token);
+  renderUserSlot();
+  if (!silent) {
+    toast(`Вы вошли как ${data.login}${amAdmin() ? ' (администратор)' : ''}`);
+    if (scopes !== null && !/(^|[\s,])(public_)?repo([\s,]|$)/.test(scopes)) {
+      toast('У токена нет права public_repo — писать не получится. Создайте новый токен с этой галочкой.', 'err');
+    }
+    const back = S.back && !S.back.startsWith('#/login') ? S.back : '#/';
+    if (location.hash === back) route(); else location.hash = back;
+  }
+}
+function logout() {
+  S.token = null; S.me = null; S.perms = null; S.liked.clear();
+  store.del(tokKey());
+  renderUserSlot();
+  toast('Вы вышли с форума');
+  route();
+}
+
+/* ---------- каркас ---------- */
+function renderShell() {
+  document.title = S.cfg.title;
+  $('#app').innerHTML = `<div id="wrap">
+    <div class="banner"><a class="logo" href="#/"><span class="logo-title">${esc(S.cfg.title)}</span>${S.cfg.description ? `<span class="logo-desc">${esc(S.cfg.description)}</span>` : ''}</a></div>
+    <div class="navbar">
+      <a href="#/">Главная</a>
+      <a href="#/new">Новая тема</a>
+      <a href="#/newsection" id="nav-newsec">Создать раздел</a>
+      <a href="#/users">Пользователи</a>
+      <a href="#/search">Поиск</a>
+      <span class="nav-right" id="user-slot"></span>
+    </div>
+    <main id="main"></main>
+    <div class="footer">Форум работает на GitHub Pages · данные хранятся в <a href="https://github.com/${esc(S.cfg.owner)}/${esc(S.cfg.repo)}" target="_blank" rel="noopener">${esc(S.cfg.owner)}/${esc(S.cfg.repo)}</a> · <a href="?setup">Создать свой форум</a></div>
+  </div>
+  <div id="toasts"></div>`;
+  renderUserSlot();
+}
+function renderUserSlot() {
+  const el = $('#user-slot');
+  if (!el) return;
+  const ns = $('#nav-newsec');
+  if (ns) ns.hidden = S.cfg.allowUserSections === false && !amAdmin();
+  el.innerHTML = S.me
+    ? `Вы вошли как <a href="#/u/${esc(S.me.login)}"><b>${esc(S.me.login)}</b></a>${amAdmin() ? ' · <a href="#/admin"><b>Администрирование</b></a>' : ''} · <a href="#/" data-action="logout">Выход</a>`
+    : 'Гость · <a href="#/login" data-action="login"><b>Вход</b></a>';
+}
+function setMain(html, seq) {
+  if (seq !== undefined && seq !== S.seq) return false;
+  const m = $('#main');
+  if (!m) return false;
+  m.innerHTML = html;
+  enhanceMd(m);
+  return true;
+}
+// Ссылки на issues этого репозитория ведут внутрь форума, внешние — в новое окно.
+function enhanceMd(root) {
+  if (!S.cfg) return;
+  const re = new RegExp(`^https://github\\.com/${reEsc(S.cfg.owner)}/${reEsc(S.cfg.repo)}/issues/(\\d+)/?$`, 'i');
+  $$('.md a[href]', root).forEach(a => {
+    const href = a.getAttribute('href');
+    const m = href.match(re);
+    if (m) { a.setAttribute('href', '#/p/' + m[1]); a.removeAttribute('target'); }
+    else if (/^https?:/i.test(href)) { a.target = '_blank'; a.rel = 'noopener noreferrer'; }
+  });
+}
+
+/* ---------- роутер ---------- */
+function parseHash() {
+  const raw = location.hash.replace(/^#\/?/, '');
+  const i = raw.indexOf('?');
+  const path = i < 0 ? raw : raw.slice(0, i);
+  const qs = i < 0 ? '' : raw.slice(i + 1);
+  const parts = path.split('/').filter(Boolean).map(s => { try { return decodeURIComponent(s); } catch (e) { return s; } });
+  return { parts, q: new URLSearchParams(qs) };
+}
+async function route() {
+  const seq = ++S.seq;
+  const { parts, q } = parseHash();
+  const [a, b] = parts;
+  document.title = S.cfg.title;
+  try {
+    if (!a) await viewHome(q, seq);
+    else if (a === 'c' && b) await viewSection(b, q, seq);
+    else if (a === 'p' && /^\d+$/.test(b || '')) await viewTopic(+b, seq);
+    else if (a === 'new') await viewEditor(null, q, seq);
+    else if (a === 'edit' && /^\d+$/.test(b || '')) await viewEditor(+b, q, seq);
+    else if (a === 'newsection') viewNewSection(seq);
+    else if (a === 'u' && b) await viewUser(b, seq);
+    else if (a === 'users') await viewUsers(seq);
+    else if (a === 'search') await viewSearch(q.get('q') || '', seq);
+    else if (a === 'login') viewLogin(seq);
+    else if (a === 'admin') await viewAdmin(seq);
+    else setMain(crumbs('Ошибка') + msgTable('Ошибка', 'Такой страницы на форуме нет. <a href="#/">Вернуться на главную</a>'), seq);
+  } catch (e) {
+    console.error(e);
+    setMain(crumbs('Ошибка') + msgTable('Ошибка', `${esc(e.message || e)}<br><br><button class="btn" data-action="retry">Повторить</button> <a class="btn" href="#/">На главную</a>${!S.me && e.status === 403 ? ' <button class="btn main" data-action="login">Войти</button>' : ''}`), seq);
+  }
+}
+
+/* ---------- главная ---------- */
+async function viewHome(q, seq) {
+  setMain(loadingTable(), seq);
+  await loadPosts();
+  const posts = visiblePosts();
+  const tab = SORTS[q.get('tab')] ? q.get('tab') : 'popular';
+  const period = q.get('period') in PERIODS ? q.get('period') : 'all';
+  const pinned = posts.filter(p => p.pinned).sort(SORTS.new);
+  const list = sortPosts(posts.filter(p => !p.pinned), tab, period).slice(0, 15);
+  const title = { popular: 'Популярные темы', new: 'Новые темы', discussed: 'Обсуждаемые темы' }[tab];
+  const comments = posts.reduce((s, p) => s + p.comments, 0);
+  const authors = {};
+  posts.forEach(p => { authors[p.author] = (authors[p.author] || 0) + 1; });
+  const topAuthor = Object.entries(authors).sort((x, y) => y[1] - x[1])[0];
+  const newest = posts.slice().sort(SORTS.new)[0];
+  setMain(`<div class="infoline"><span>Сейчас: ${fmtDate(new Date().toISOString())}</span><span>${S.me ? `Здравствуйте, <b>${esc(S.me.login)}</b>!` : 'Здравствуйте, гость! <a href="#/login" data-action="login">Войдите</a>, чтобы писать на форуме.'}</span></div>
+    ${crumbs()}
+    ${pinned.length ? topicTable('Объявления', pinned, { showSection: true }) : ''}
+    ${topicTable(title, list, { showSection: true, sub: sortLinks('#/', tab, period), empty: posts.length ? 'За этот период тем нет — выберите «всё время».' : 'Тем пока нет. <a href="#/new">Создайте первую!</a>' })}
+    ${sectionsTable(posts)}
+    <table class="tbl"><tr><th>Статистика форума</th></tr><tr><td class="small">
+      Всего тем: <b>${posts.length}</b> · ответов: <b>${comments}</b> · разделов: <b>${allSections().length}</b> · авторов: <b>${Object.keys(authors).length}</b><br>
+      ${topAuthor ? `Самый активный автор: <a href="#/u/${esc(topAuthor[0])}"><b>${esc(topAuthor[0])}</b></a> (${topAuthor[1]} ${plural(topAuthor[1], ['тема', 'темы', 'тем'])})` : 'Самый активный автор: пока никого'}${newest ? ` · Последняя тема: <a href="#/p/${newest.num}">${esc(cut(newest.title, 50))}</a>` : ''}
+    </td></tr></table>
+    ${legend()}`, seq);
+}
+
+/* ---------- раздел ---------- */
+async function viewSection(id, q, seq) {
+  setMain(loadingTable(), seq);
+  await loadPosts();
+  const posts = visiblePosts();
+  const c = id === 'other' ? OTHER : catById(id);
+  if (!c) return setMain(crumbs('Ошибка') + msgTable('Раздел не найден', 'Возможно, его удалили. <a href="#/">На главную</a>'), seq);
+  document.title = `${c.name} — ${S.cfg.title}`;
+  const tab = SORTS[q.get('tab')] ? q.get('tab') : 'new';
+  const period = q.get('period') in PERIODS ? q.get('period') : 'all';
+  const inSec = posts.filter(p => (id === 'other' ? !catById(p.cat) : p.cat === id));
+  const list = [...inSec.filter(p => p.pinned).sort(SORTS.new), ...sortPosts(inSec.filter(p => !p.pinned), tab, period)];
+  const canDel = !c.official && !!S.me && (canModerate() || S.me.login === c.author);
+  const base = '#/c/' + encodeURIComponent(c.id);
+  setMain(`${crumbs(`<a href="${base}">${esc(c.name)}</a>`)}
+    <h1 class="topic-title">${esc(c.name)}</h1>
+    ${c.desc ? `<div class="sec-desc">${esc(c.desc)}</div>` : ''}
+    ${c.official ? '' : `<div class="small gray">Раздел участников. Создал: <a href="#/u/${esc(c.author)}">${esc(c.author)}</a>, ${fmtDate(c.created)}</div>`}
+    <div class="btnrow"><a class="btn main" href="#/new${id === 'other' ? '' : '?cat=' + encodeURIComponent(c.id)}">Новая тема</a>${canDel ? `<button class="btn" data-action="del-section" data-num="${c.num}">Удалить раздел</button>` : ''}</div>
+    ${topicTable('Темы раздела', list, { sub: sortLinks(base, tab, period), empty: 'В этом разделе пока нет тем. <a href="#/new' + (id === 'other' ? '' : '?cat=' + encodeURIComponent(c.id)) + '">Создайте первую!</a>' })}
+    ${legend()}`, seq);
+}
+
+/* ---------- тема ---------- */
+function postRow(o) {
+  const banned = isBanned(o.login);
+  return `<tr class="${o.alt ? 'alt' : ''}${banned ? ' banned' : ''}"${o.cid ? ` data-cid="${o.cid}"` : ''}>
+    <td class="p-author">
+      <a class="p-name" href="#/u/${esc(o.login)}">${esc(o.login)}</a>
+      <div class="p-rank">${rankOf(o.login)}${o.isAuthor ? ' · автор темы' : ''}</div>
+      ${o.avatar ? `<img class="p-ava" src="${esc(avatarUrl(o.avatar, 160))}" width="80" height="80" alt="" loading="lazy">` : ''}
+      <div class="p-info">Тем: ${topicsBy(o.login)}<br>Спасибо получено: ${thanksTo(o.login)}</div>
+    </td>
+    <td class="p-msg">
+      <div class="p-head"><span class="nw">Добавлено: ${fmtDate(o.created)}</span><span class="p-subj">Заголовок: ${esc(o.subject)}</span><span class="p-tools">${o.tools}</span></div>
+      <div class="md">${o.html || '<p class="gray">(пустое сообщение)</p>'}</div>
+      <div class="p-foot">${o.likeBtn}<span>Сказали «спасибо»: <b class="thx-n">${o.likes}</b></span></div>
+    </td>
+  </tr>`;
+}
+const thxBtn = (action, attr, on) => `<button class="btn btn-xs${on ? ' on' : ''}" data-action="${action}" ${attr}>${on ? 'Забрать «спасибо»' : 'Спасибо!'}</button>`;
+function commentsVisible() {
+  return S.cur.comments.filter(c => amAdmin() || !isBanned(c.user && c.user.login));
+}
+function commentRows() {
+  const p = S.cur.p, mod = canModerate();
+  return commentsVisible().map((c, i) => {
+    const login = c.user ? c.user.login : 'ghost';
+    const mine = !!S.me && S.me.login === login;
+    const r = c.reactions || {};
+    const canQuote = !!S.me && (!p.locked || mod);
+    const tools = (canQuote ? `<button class="btn btn-xs" data-action="quote" data-id="${c.id}">Цитата</button>` : '')
+      + (mine || amAdmin() ? `<button class="btn btn-xs" data-action="edit-comment" data-id="${c.id}">Изм.</button>` : '')
+      + (mine || mod ? `<button class="btn btn-xs" data-action="delete-comment" data-id="${c.id}">Удалить</button>` : '');
+    return postRow({
+      cid: c.id, alt: i % 2 === 0, login, avatar: c.user && c.user.avatar_url, created: c.created_at, html: c.body_html,
+      subject: 'Re: ' + p.title, isAuthor: login === p.author, tools,
+      likes: (r['+1'] || 0) + (r.heart || 0), likeBtn: thxBtn('like-comment', `data-id="${c.id}"`, S.liked.has('c' + c.id)),
+    });
+  }).join('');
+}
+function rerenderComments() {
+  const box = $('#comments');
+  if (!box || !S.cur) return;
+  box.innerHTML = commentRows();
+  enhanceMd(box);
+  const n = $('#reply-count');
+  if (n) n.textContent = commentsVisible().length;
+}
+function replyBox(p) {
+  if (p.state === 'closed') return '';
+  if (p.locked && !canModerate()) return msgTable('Ответ', 'Тема закрыта, отвечать в ней нельзя.');
+  if (!S.me) return msgTable('Ответ', 'Чтобы ответить, <a href="#/login" data-action="login"><b>войдите</b></a> через GitHub.');
+  if (isBanned(S.me.login)) return msgTable('Ответ', 'Вы заблокированы и не можете писать на форуме.');
+  return `<form data-form="comment" data-num="${p.num}"><table class="tbl form-tbl">
+    <tr><th colspan="2">Быстрый ответ</th></tr>
+    <tr><td class="lbl">Сообщение${EDITOR_HINT}</td><td>${editorHTML('', { rows: 7 })}</td></tr>
+    <tr><td colspan="2" class="actions"><button class="btn main">Отправить</button></td></tr>
+  </table></form>`;
+}
+function modForm(p) {
+  const banned = isBanned(p.author);
+  const canBan = !isAdminUser(p.author) && !(S.me && S.me.login === p.author);
+  return `<form class="modbar" data-form="mod" data-num="${p.num}"><b>Модерирование:</b>
+    <select class="inp" name="act" aria-label="Действие модератора">
+      <option value="${p.pinned ? 'unpin' : 'pin'}">${p.pinned ? 'Снять пометку «Важно»' : 'Сделать тему важной'}</option>
+      <option value="${p.locked ? 'unlock' : 'lock'}">${p.locked ? 'Открыть тему' : 'Закрыть тему'}</option>
+      <option value="${p.state === 'open' ? 'hide' : 'restore'}">${p.state === 'open' ? 'Удалить тему' : 'Восстановить тему'}</option>
+      ${canBan ? `<option value="${banned ? 'unban' : 'ban'}">${banned ? 'Разблокировать' : 'Заблокировать'} автора (${esc(p.author)})</option>` : ''}
+    </select>
+    <button class="btn">Выполнить</button></form>`;
+}
+async function viewTopic(num, seq) {
+  setMain(loadingTable(), seq);
+  const [issue, comments, myLike] = await Promise.all([
+    gh(`${R()}/issues/${num}`, { accept: FULL }),
+    loadComments(num),
+    S.me ? myReactionId(num).catch(() => null) : null,
+    loadPosts().catch(() => null),
+  ]);
+  if (seq !== S.seq) return;
+  if (issue.pull_request) throw new GhError(404, null);
+  const p = toPost(issue);
+  if (p.isSection) { location.hash = '#/c/s' + num; return; }
+  const mod = canModerate();
+  const mine = !!S.me && S.me.login === p.author;
+  if (!mod && (p.state === 'closed' || isBanned(p.author))) {
+    return setMain(crumbs('Тема удалена') + msgTable('Тема удалена', 'Автор или администратор убрал эту тему с форума. <a href="#/">На главную</a>'), seq);
+  }
+  if (myLike) S.liked.add('p' + num); else S.liked.delete('p' + num);
+  S.cur = { p, comments };
+  document.title = `${p.title} — ${S.cfg.title}`;
+  const sec = catById(p.cat) || OTHER;
+  const canQuote = !!S.me && (!p.locked || mod);
+  const tools = (canQuote ? '<button class="btn btn-xs" data-action="quote" data-id="topic">Цитата</button>' : '')
+    + (mine || mod ? `<a class="btn btn-xs" href="#/edit/${p.num}">Изм.</a>` : '')
+    + ((mine || mod) && p.state === 'open' ? `<button class="btn btn-xs" data-action="hide-post" data-num="${p.num}">Удалить</button>` : '');
+  setMain(`${crumbs(`<a href="#/c/${esc(sec.id)}">${esc(sec.name)}</a>`)}
+    ${p.state === 'closed' ? `<div class="notice"><b>Тема удалена</b> и видна только модераторам. <button class="btn btn-xs" data-action="restore-post" data-num="${p.num}">Восстановить</button></div>` : ''}
+    ${isBanned(p.author) ? '<div class="notice"><b>Автор заблокирован</b> — тема скрыта от посетителей.</div>' : ''}
+    <h1 class="topic-title">${p.pinned ? 'Важно: ' : ''}${esc(p.title)}</h1>
+    <div class="btnrow"><button class="btn main" data-action="reply">${p.locked ? 'Тема закрыта' : 'Ответить'}</button><a class="btn" href="#/new${sec.id === 'other' ? '' : '?cat=' + encodeURIComponent(sec.id)}">Новая тема</a><span class="grow"></span><span class="small gray">Ответов: <b id="reply-count">${commentsVisible().length}</b> · Спасибо: ${p.likes}</span></div>
+    <table class="tbl posts">
+      <tr class="posthead"><th style="width:170px">Автор</th><th>Сообщение</th></tr>
+      <tbody>${postRow({ alt: false, login: p.author, avatar: p.avatar, created: p.created, html: p.html, subject: p.title, isAuthor: true, tools, likes: p.likes, likeBtn: thxBtn('like-post', `data-num="${p.num}"`, !!myLike) })}</tbody>
+      <tbody id="comments">${commentRows()}</tbody>
+    </table>
+    ${mod ? modForm(p) : ''}
+    <div id="reply-box">${replyBox(p)}</div>`, seq);
+}
+
+/* ---------- новая тема / редактирование ---------- */
+async function viewEditor(num, q, seq) {
+  if (!S.me) return setMain(crumbs('Новая тема') + loginNeeded('Чтобы создать тему, войдите через GitHub.'), seq);
+  if (isBanned(S.me.login)) return setMain(crumbs('Новая тема') + msgTable('Доступ закрыт', 'Вы заблокированы и не можете создавать темы.'), seq);
+  setMain(loadingTable(), seq);
+  await loadPosts();
+  let post = null;
+  if (num) {
+    post = toPost(await gh(`${R()}/issues/${num}`));
+    if (post.author !== S.me.login && !canModerate()) throw new Error('Можно редактировать только свои темы.');
+  }
+  let draft = null;
+  if (!post) { try { draft = JSON.parse(store.get(draftKey()) || 'null'); } catch (e) { draft = null; } }
+  const title = post ? post.title : (draft && draft.title) || '';
+  const text = post ? post.text : (draft && draft.text) || '';
+  const secs = allSections();
+  let cat = post ? post.cat || '' : (q.get('cat') || (draft && draft.cat) || '');
+  if (cat !== '' && !catById(cat)) cat = secs[0] ? secs[0].id : '';
+  if (!post && !q.get('cat') && !draft && secs[0]) cat = secs[0].id;
+  const opts = secs.map(c => `<option value="${esc(c.id)}"${c.id === cat ? ' selected' : ''}>${esc(c.name)}${c.official ? '' : ' (раздел участников)'}</option>`).join('');
+  if (!setMain(`${crumbs(post ? `<a href="#/p/${num}">${esc(cut(post.title, 50))}</a> » Редактирование` : 'Новая тема')}
+    <form data-form="post" data-num="${num || ''}"><table class="tbl form-tbl">
+      <tr><th colspan="2">${post ? 'Редактирование темы' : 'Создание новой темы'}</th></tr>
+      <tr><td class="lbl">Раздел</td><td>
+        <select class="inp" name="cat">${opts}<option value=""${cat === '' ? ' selected' : ''}>Разное (без раздела)</option>${canCreateSection() ? '<option value="__new">— Новый раздел на любую тему… —</option>' : ''}</select>
+        <div class="newsec" hidden><input class="inp" name="secname" placeholder="Название нового раздела, например «Рыбалка»" maxlength="60"><input class="inp wide" name="secdesc" placeholder="Описание раздела (необязательно)" maxlength="160"></div>
+      </td></tr>
+      <tr><td class="lbl">Заголовок</td><td><input class="inp wide" name="title" maxlength="200" value="${esc(title)}" required></td></tr>
+      <tr><td class="lbl">Сообщение${EDITOR_HINT}</td><td>${editorHTML(text, { rows: 14 })}</td></tr>
+      <tr><td colspan="2" class="actions">${draft && !post ? '<button type="button" class="btn" data-action="clear-draft">Очистить черновик</button>' : ''}<a class="btn" href="${post ? '#/p/' + num : '#/'}">Отмена</a><button class="btn main">${post ? 'Сохранить' : 'Создать тему'}</button></td></tr>
+    </table></form>`, seq)) return;
+  const ed = $('#main .editor');
+  if (ed) updateAttach(ed);
+  const t = $('#main [name=title]');
+  if (t && !title) t.focus();
+}
+function viewNewSection(seq) {
+  if (!S.me) return setMain(crumbs('Создать раздел') + loginNeeded('Чтобы создать раздел, войдите через GitHub.'), seq);
+  if (!canCreateSection()) return setMain(crumbs('Создать раздел') + msgTable('Доступ закрыт', isBanned(S.me.login) ? 'Вы заблокированы.' : 'Администратор отключил создание разделов участниками.'), seq);
+  return setMain(`${crumbs('Создать раздел')}
+    <form data-form="section"><table class="tbl form-tbl">
+      <tr><th colspan="2">Новый раздел форума</th></tr>
+      <tr><td colspan="2" class="row-text">Создайте раздел на <b>любую тему</b> — «Рыбалка», «Аниме», «Ремонт машин», что угодно. В нём все участники смогут открывать свои темы. Неподходящие разделы администратор может удалить.</td></tr>
+      <tr><td class="lbl">Название раздела</td><td><input class="inp" name="name" maxlength="60" required></td></tr>
+      <tr><td class="lbl">Описание</td><td><input class="inp wide" name="desc" maxlength="160" placeholder="О чём этот раздел (необязательно)"></td></tr>
+      <tr><td colspan="2" class="actions"><a class="btn" href="#/">Отмена</a><button class="btn main">Создать раздел</button></td></tr>
+    </table></form>`, seq);
+}
+
+/* ---------- пользователи, профиль, поиск, вход ---------- */
+async function viewUsers(seq) {
+  setMain(loadingTable(), seq);
+  await loadPosts();
+  const posts = visiblePosts();
+  const users = {};
+  posts.forEach(p => {
+    const u = users[p.author] || (users[p.author] = { login: p.author, avatar: p.avatar, topics: 0, thanks: 0, last: null });
+    u.topics++; u.thanks += p.likes;
+    if (!u.last || new Date(p.created) > new Date(u.last.created)) u.last = p;
+  });
+  const list = Object.values(users).sort((a, b) => b.topics - a.topics || b.thanks - a.thanks);
+  setMain(`${crumbs('Пользователи')}
+    <table class="tbl">
+      <tr><th class="hs">Аватар</th><th>Пользователь</th><th class="hs">Звание</th><th class="c">Тем</th><th class="c hs">Спасибо</th><th class="hs">Последняя тема</th></tr>
+      ${list.length ? list.map((u, i) => `<tr class="${i % 2 ? 'alt' : ''}">
+        <td class="ic hs"><img src="${esc(avatarUrl(u.avatar, 64))}" width="32" height="32" alt="" loading="lazy" style="border:1px solid #8DA2B8;display:block"></td>
+        <td><a class="t-title" href="#/u/${esc(u.login)}">${esc(u.login)}</a></td>
+        <td class="small hs">${rankOf(u.login)}</td>
+        <td class="num">${u.topics}</td>
+        <td class="num hs">${u.thanks}</td>
+        <td class="last hs"><a href="#/p/${u.last.num}">${esc(cut(u.last.title, 38))}</a><br>${fmtDate(u.last.created)}</td>
+      </tr>`).join('') : '<tr><td colspan="6" class="empty-row">Пока никто не создавал тем.</td></tr>'}
+    </table>
+    <div class="small gray">В списке — участники, которые создавали темы.</div>`, seq);
+}
+async function viewUser(login, seq) {
+  setMain(loadingTable(), seq);
+  const [, prof] = await Promise.all([loadPosts(), gh(`/users/${encodeURIComponent(login)}`).catch(() => null)]);
+  const shown = (prof && prof.login) || login;
+  const mine = visiblePosts().filter(p => p.author.toLowerCase() === shown.toLowerCase()).sort(SORTS.new);
+  const isMe = !!S.me && S.me.login.toLowerCase() === shown.toLowerCase();
+  const ava = prof ? prof.avatar_url : (mine[0] && mine[0].avatar);
+  document.title = `Профиль ${shown} — ${S.cfg.title}`;
+  setMain(`${crumbs('Профиль пользователя ' + esc(shown))}
+    <table class="tbl form-tbl">
+      <tr><th colspan="2">Профиль пользователя ${esc(shown)}</th></tr>
+      <tr><td class="lbl c" rowspan="1">${ava ? `<img src="${esc(avatarUrl(ava, 200))}" width="100" height="100" alt="" style="border:1px solid #8DA2B8;display:block;margin:0 auto 6px">` : ''}<b>${esc(shown)}</b><br><span class="small" style="font-weight:normal">${rankOf(shown)}</span></td>
+      <td class="small">
+        ${prof && prof.name ? `Имя: <b>${esc(prof.name)}</b><br>` : ''}
+        ${prof && prof.bio ? `О себе: ${esc(prof.bio)}<br>` : ''}
+        ${prof && prof.location ? `Откуда: ${esc(prof.location)}<br>` : ''}
+        ${prof && prof.created_at ? `На GitHub с: ${fmtDate(prof.created_at)}<br>` : ''}
+        Тем на форуме: <b>${mine.length}</b><br>
+        Сказали «спасибо»: <b>${mine.reduce((s, p) => s + p.likes, 0)}</b><br>
+        Ответов в его темах: <b>${mine.reduce((s, p) => s + p.comments, 0)}</b><br><br>
+        <a class="btn btn-xs" href="https://github.com/${esc(shown)}" target="_blank" rel="noopener">Профиль на GitHub</a>
+        ${canModerate() && !isAdminUser(shown) && !isMe ? `<button class="btn btn-xs" data-action="${isBanned(shown) ? 'unban' : 'ban'}" data-login="${esc(shown)}">${isBanned(shown) ? 'Разблокировать' : 'Заблокировать'}</button>` : ''}
+        ${isMe ? '<button class="btn btn-xs" data-action="logout">Выйти</button>' : ''}
+      </td></tr>
+    </table>
+    ${topicTable('Темы пользователя ' + esc(shown), mine, { showSection: true, empty: 'Пользователь пока не создавал тем.' })}`, seq);
+}
+async function viewSearch(query, seq) {
+  setMain(loadingTable(), seq);
+  await loadPosts();
+  const ql = query.trim().toLowerCase();
+  const res = ql ? visiblePosts().filter(p => (p.title + '\n' + p.text + '\n' + p.author).toLowerCase().includes(ql)).sort(SORTS.popular) : [];
+  setMain(`${crumbs('Поиск')}
+    <form data-form="search"><table class="tbl form-tbl">
+      <tr><th colspan="2">Поиск по форуму</th></tr>
+      <tr><td class="lbl">Ключевые слова</td><td><input class="inp" name="q" type="search" value="${esc(query)}" placeholder="слово из заголовка, текста или имя автора"> <button class="btn main">Найти</button></td></tr>
+    </table></form>
+    ${ql ? topicTable(`Результаты поиска: найдено ${res.length} ${plural(res.length, ['тема', 'темы', 'тем'])}`, res, { showSection: true, empty: 'Ничего не найдено. Попробуйте другие слова.' }) : ''}`, seq);
+  const inp = $('#main [name=q]');
+  if (inp && !ql) inp.focus();
+}
+function viewLogin(seq) {
+  if (S.me) return setMain(crumbs('Вход') + msgTable('Вход', `Вы уже вошли как <b>${esc(S.me.login)}</b>. <a href="#/">На главную</a>`), seq);
+  const url = `https://github.com/settings/tokens/new?scopes=public_repo&description=${encodeURIComponent('Форум ' + S.cfg.title)}`;
+  return setMain(`${crumbs('Вход')}
+    <form data-form="login"><table class="tbl form-tbl">
+      <tr><th colspan="2">Вход на форум</th></tr>
+      <tr><td colspan="2" class="row-text">Форум хранит сообщения на GitHub, поэтому писать могут владельцы аккаунта GitHub (регистрация там бесплатная). Читать форум может кто угодно.
+        <ol>
+          <li>Откройте <a href="${esc(url)}" target="_blank" rel="noopener"><b>создание токена на GitHub</b></a> — нужная галочка <code>public_repo</code> уже стоит.</li>
+          <li>Внизу страницы нажмите <b>Generate token</b> и скопируйте токен (начинается с <code>ghp_</code>).</li>
+          <li>Вставьте его в поле ниже и нажмите «Вход».</li>
+        </ol></td></tr>
+      <tr><td class="lbl">Токен GitHub</td><td><input class="inp mono" type="password" name="token" placeholder="ghp_..." autocomplete="off" spellcheck="false" required></td></tr>
+      <tr><td colspan="2" class="actions"><button class="btn main">Вход</button></td></tr>
+      <tr><td colspan="2" class="small gray">Токен хранится только в этом браузере и отправляется только на api.github.com. Картинки, которые вы прикрепляете, сохраняются в ваш публичный репозиторий <code>${IMG_REPO}</code> (он создастся сам). Администратор входит тем же токеном (с правом <code>repo</code>), что использовал при установке.</td></tr>
+    </table></form>`, seq);
+}
+
+/* ---------- администрирование ---------- */
+function catRow(c) {
+  return `<tr class="cat-row" data-id="${esc(c.id)}">
+    <td><input class="inp cat-name" value="${esc(c.name)}" placeholder="Название" maxlength="60" aria-label="Название"></td>
+    <td class="hs"><input class="inp wide cat-desc" value="${esc(c.desc || '')}" placeholder="Описание" maxlength="160" aria-label="Описание"></td>
+    <td class="nw"><button type="button" class="btn btn-xs" data-action="cat-up" title="Выше">&uarr;</button> <button type="button" class="btn btn-xs" data-action="cat-down" title="Ниже">&darr;</button> <button type="button" class="btn btn-xs" data-action="del-cat" title="Удалить">x</button></td>
+  </tr>`;
+}
+async function viewAdmin(seq) {
+  if (!amAdmin()) {
+    return setMain(crumbs('Администрирование') + (S.me ? msgTable('Доступ закрыт', 'Эта страница только для администратора форума.') : loginNeeded('Войдите токеном администратора (тем же, что при установке).')), seq);
+  }
+  setMain(loadingTable(), seq);
+  let hidden = [];
+  await loadPosts(true);
+  try { hidden = (await gh(`${R()}/issues?state=closed&per_page=50&sort=updated`)).filter(i => !i.pull_request).map(toPost); } catch (e) { /* не критично */ }
+  const c = S.cfg;
+  const repoUrl = `https://github.com/${c.owner}/${c.repo}`;
+  const media = c.mediaBranch || MEDIA_BRANCH;
+  const st = sectionStats(visiblePosts());
+  const userSecs = allSections().filter(s => !s.official);
+  document.title = `Администрирование — ${c.title}`;
+  setMain(`${crumbs('Администрирование')}
+    <form data-form="settings">
+      <table class="tbl form-tbl">
+        <tr><th colspan="2">Общие настройки</th></tr>
+        <tr><td class="lbl">Название форума</td><td><input class="inp" name="title" value="${esc(c.title)}" maxlength="80" required></td></tr>
+        <tr><td class="lbl">Описание</td><td><input class="inp wide" name="description" value="${esc(c.description || '')}" maxlength="200"></td></tr>
+        <tr><td class="lbl">Разделы участников</td><td><label class="check"><input type="checkbox" name="allowUserSections"${c.allowUserSections !== false ? ' checked' : ''}> Участники могут создавать разделы на любую тему</label></td></tr>
+      </table>
+      <table class="tbl">
+        <tr><th>Основной раздел</th><th class="hs">Описание</th><th style="width:1%">Порядок</th></tr>
+        <tbody id="cat-list">${(c.categories || []).map(catRow).join('')}</tbody>
+        <tr class="sub"><td colspan="3"><button type="button" class="btn btn-xs" data-action="add-cat">Добавить раздел</button> <span class="gray">Темы удалённого раздела попадут в «Разное».</span></td></tr>
+        <tr><td colspan="3" class="c" style="background:#DFE6ED"><button class="btn main">Сохранить настройки</button></td></tr>
+      </table>
+    </form>
+    <table class="tbl">
+      <tr><th>Разделы участников</th><th class="c hs">Тем</th><th class="hs">Создал</th><th style="width:1%"></th></tr>
+      ${userSecs.length ? userSecs.map((s, i) => `<tr class="${i % 2 ? 'alt' : ''}"><td><a class="t-title" href="#/c/${esc(s.id)}">${esc(s.name)}</a>${s.desc ? `<div class="t-desc">${esc(s.desc)}</div>` : ''}</td><td class="num hs">${(st[s.id] || {}).topics || 0}</td><td class="small hs"><a href="#/u/${esc(s.author)}">${esc(s.author)}</a><br>${fmtDate(s.created)}</td><td><button class="btn btn-xs" data-action="del-section" data-num="${s.num}">Удалить</button></td></tr>`).join('') : '<tr><td colspan="4" class="empty-row">Участники ещё не создавали разделов.</td></tr>'}
+    </table>
+    <table class="tbl">
+      <tr><th colspan="2">Заблокированные пользователи</th></tr>
+      <tr class="sub"><td colspan="2"><form data-form="ban" style="display:flex;gap:4px;flex-wrap:wrap"><input class="inp mono" name="login" placeholder="логин на GitHub" spellcheck="false" style="max-width:240px"><button class="btn">Заблокировать</button></form></td></tr>
+      ${(c.banned || []).length ? c.banned.map((l, i) => `<tr class="${i % 2 ? 'alt' : ''}"><td><a href="#/u/${esc(l)}"><b>${esc(l)}</b></a></td><td style="width:1%"><button class="btn btn-xs" data-action="unban" data-login="${esc(l)}">Разблокировать</button></td></tr>`).join('') : '<tr><td colspan="2" class="empty-row">Никто не заблокирован.</td></tr>'}
+    </table>
+    <table class="tbl">
+      <tr><th>Удалённые темы и разделы</th><th class="hs">Автор</th><th style="width:1%"></th></tr>
+      ${hidden.length ? hidden.map((p, i) => `<tr class="${i % 2 ? 'alt' : ''}"><td>${p.isSection ? '[Раздел] ' : ''}<a href="#/p/${p.num}">${esc(p.title)}</a><div class="t-desc">${fmtDate(p.updated)}</div></td><td class="small hs">${esc(p.author)}</td><td><button class="btn btn-xs" data-action="restore-post" data-num="${p.num}">Восстановить</button></td></tr>`).join('') : '<tr><td colspan="3" class="empty-row">Корзина пуста.</td></tr>'}
+    </table>
+    <table class="tbl">
+      <tr><th>Где хранятся данные</th></tr>
+      <tr><td class="row-text">
+        Темы и ответы — <a href="${esc(repoUrl)}/issues" target="_blank" rel="noopener">Issues репозитория</a>, «спасибо» — реакции 👍, разделы участников — служебные issues.<br>
+        Настройки (название, основные разделы, блокировки) — файл <a href="${esc(repoUrl)}/blob/HEAD/forum-config.json" target="_blank" rel="noopener">forum-config.json</a>; посетители увидят изменения примерно через минуту.<br>
+        Ваши картинки — ветка <a href="${esc(repoUrl)}/tree/${esc(media)}/uploads" target="_blank" rel="noopener">${esc(media)}</a>, картинки участников — их репозитории <code>${IMG_REPO}</code>.<br>
+        Код форума — <code>index.html</code>. Чтобы обновить его, откройте новую версию setup.html и укажите этот же репозиторий: темы и настройки сохранятся.<br><br>
+        <a class="btn btn-xs" href="${esc(repoUrl)}" target="_blank" rel="noopener">Репозиторий</a> <a class="btn btn-xs" href="${esc(repoUrl)}/settings/pages" target="_blank" rel="noopener">Настройки Pages</a>
+      </td></tr>
+    </table>`, seq);
+}
+
+/* ---------- редактор ---------- */
+function insertText(ta, text, selFrom, selTo) {
+  const s = ta.selectionStart, e = ta.selectionEnd;
+  ta.focus();
+  ta.setSelectionRange(s, e);
+  let ok = false;
+  try { ok = document.execCommand('insertText', false, text); } catch (err) { ok = false; }
+  if (!ok) { ta.setRangeText(text, s, e, 'end'); ta.dispatchEvent(new Event('input', { bubbles: true })); }
+  if (selFrom != null) ta.setSelectionRange(s + selFrom, s + selTo);
+}
+function mdApply(ta, kind) {
+  if (!ta) return;
+  const s = ta.selectionStart, e = ta.selectionEnd, sel = ta.value.slice(s, e);
+  const wrap = (l, r, ph) => { const t = sel || ph; insertText(ta, l + t + r, l.length, l.length + t.length); };
+  const lines = (prefix, ph) => {
+    const t = (sel || ph).split('\n').map(x => prefix + x).join('\n');
+    const nl = s > 0 && ta.value[s - 1] !== '\n' ? '\n' : '';
+    insertText(ta, nl + t, nl.length, nl.length + t.length);
+  };
+  switch (kind) {
+    case 'bold': return wrap('**', '**', 'жирный текст');
+    case 'italic': return wrap('_', '_', 'курсив');
+    case 'strike': return wrap('~~', '~~', 'зачёркнутый текст');
+    case 'quote': return lines('> ', 'цитата');
+    case 'list': return lines('- ', 'пункт списка');
+    case 'code': return sel.includes('\n') ? wrap('```\n', '\n```', '') : wrap('`', '`', 'код');
+    case 'spoiler': return wrap('<details><summary>Спойлер</summary>\n\n', '\n\n</details>', 'скрытый текст');
+    case 'link': {
+      const t = sel || 'текст ссылки', url = 'https://';
+      insertText(ta, `[${t}](${url})`, t.length + 3, t.length + 3 + url.length);
+      return undefined;
+    }
+    default: return undefined;
+  }
+}
+async function edTab(btn) {
+  const ed = btn.closest('.editor');
+  const ta = $('textarea', ed), pv = $('.ed-preview', ed), tools = $('.ed-tools', ed);
+  $$('.ed-tab', ed).forEach(b => b.classList.toggle('on', b === btn));
+  if (btn.dataset.ed === 'write') { pv.hidden = true; ta.hidden = false; tools.style.visibility = ''; ta.focus(); return; }
+  ta.hidden = true; pv.hidden = false; tools.style.visibility = 'hidden';
+  if (!ta.value.trim()) { pv.innerHTML = '<p class="gray">Здесь появится предпросмотр.</p>'; return; }
+  pv.innerHTML = '<p class="gray">Готовлю предпросмотр…</p>';
+  try {
+    const res = await gh('/markdown', { method: 'POST', body: { text: ta.value, mode: 'gfm', context: `${S.cfg.owner}/${S.cfg.repo}` }, raw: true });
+    if (!res.ok) throw new GhError(res.status, await res.json().catch(() => null), res.headers);
+    pv.innerHTML = await res.text();
+    enhanceMd(ed);
+  } catch (err) { pv.innerHTML = `<p class="gray">Не удалось построить предпросмотр: ${esc(err.message)}</p>`; }
+}
+function resetEditorTab(root) {
+  const w = root && $('.ed-tab[data-ed="write"]', root);
+  if (w && !w.classList.contains('on')) edTab(w);
+}
+const PH_RE = /!\[Загрузка картинки [a-z0-9]+…\]\(\)/g;
+function updateAttach(ed) {
+  const ta = $('textarea', ed), box = $('.ed-attach', ed);
+  if (!ta || !box) return;
+  const v = ta.value;
+  const imgs = [...v.matchAll(/!\[[^\]]*\]\((https:\/\/[^)\s]+)\)/g)];
+  const loading = (v.match(PH_RE) || []).length;
+  box.innerHTML = imgs.map(m => `<div class="att"><img src="${esc(m[1])}" alt="" loading="lazy"><button type="button" class="att-x" data-action="att-remove" data-src="${esc(m[0])}" title="Убрать картинку">x</button></div>`).join('')
+    + '<div class="att">загрузка…</div>'.repeat(loading);
+  box.hidden = !imgs.length && !loading;
+}
+async function handleFiles(ed, files) {
+  if (!S.me) { openLogin(); return; }
+  const ta = $('textarea', ed);
+  resetEditorTab(ed);
+  for (const f of files) {
+    if (!f.type.startsWith('image/')) { toast(`«${f.name}» — это не картинка`, 'err'); continue; }
+    const ph = `![Загрузка картинки ${Math.random().toString(36).slice(2, 8).replace(/[^a-z0-9]/g, '') || 'x'}…]()`;
+    const before = ta.value.slice(0, ta.selectionStart);
+    insertText(ta, (before && !before.endsWith('\n') ? '\n' : '') + ph + '\n');
+    S.uploading++;
+    updateAttach(ed);
+    try {
+      const url = await uploadImage(f);
+      const alt = f.name.replace(/\.[^.]+$/, '').replace(/[[\]()]/g, '').slice(0, 60) || 'картинка';
+      ta.value = ta.value.replace(ph, `![${alt}](${url})`);
+    } catch (err) {
+      ta.value = ta.value.replace(ph + '\n', '').replace(ph, '');
+      toast('Не удалось загрузить картинку: ' + err.message, 'err');
+    } finally {
+      S.uploading--;
+      ta.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+  }
+}
+let draftTimer;
+function saveDraft(f) {
+  clearTimeout(draftTimer);
+  draftTimer = setTimeout(() => {
+    const d = { title: fv(f, 'title'), text: ($('textarea', f) || {}).value || '', cat: fv(f, 'cat') };
+    if (d.title.trim() || d.text.trim()) store.set(draftKey(), JSON.stringify(d)); else store.del(draftKey());
+  }, 400);
+}
+
+/* ---------- модерация ---------- */
+async function saveConfig(cfg, message) {
+  const path = `${R()}/contents/forum-config.json`;
+  let sha;
+  try { sha = (await gh(path)).sha; } catch (e) { if (e.status !== 404) throw e; }
+  await gh(path, { method: 'PUT', body: { message: message || 'Настройки форума', content: b64utf8(JSON.stringify(cfg, null, 2) + '\n'), sha } });
+  S.cfg = cfg;
+}
+async function setBan(login, on) {
+  if (!canModerate()) throw new Error('Нет прав модератора.');
+  if (on && isAdminUser(login)) throw new Error('Нельзя заблокировать администратора.');
+  if (on && !window.confirm(`Заблокировать ${login}? Его темы и ответы скроются с форума, а писать он больше не сможет.`)) return;
+  const banned = (S.cfg.banned || []).filter(x => x.toLowerCase() !== login.toLowerCase());
+  if (on) banned.push(login);
+  await saveConfig({ ...S.cfg, banned }, `${on ? 'Блокировка' : 'Разблокировка'} ${login}`);
+  toast(on ? `${login} заблокирован` : `${login} разблокирован`);
+  route();
+}
+async function setState(num, open, what) {
+  await gh(`${R()}/issues/${num}`, { method: 'PATCH', body: open ? { state: 'open' } : { state: 'closed', state_reason: 'not_planned' } });
+  S.postsAt = 0;
+  toast(open ? `${what} восстановлен(а)` : `${what} удален(а)`);
+}
+async function hideTopic(num) {
+  if (!window.confirm('Удалить эту тему? Она исчезнет с форума. Администратор сможет восстановить её в разделе «Администрирование».')) return;
+  await setState(num, false, 'Тема');
+  location.hash = '#/';
+}
+const MOD = {
+  pin: async n => { await gh(`${R()}/issues/${n}/labels`, { method: 'POST', body: { labels: ['pinned'] } }); toast('Тема отмечена как важная'); },
+  unpin: async n => { await gh(`${R()}/issues/${n}/labels/pinned`, { method: 'DELETE' }); toast('Пометка «Важно» снята'); },
+  lock: async n => { await gh(`${R()}/issues/${n}/lock`, { method: 'PUT', body: {} }); toast('Тема закрыта'); },
+  unlock: async n => { await gh(`${R()}/issues/${n}/lock`, { method: 'DELETE' }); toast('Тема открыта'); },
+};
+
+const ACTIONS = {
+  'close-modal': () => closeModal(),
+  login: () => openLogin(),
+  logout: () => logout(),
+  retry: () => { S.postsAt = 0; route(); },
+  'clear-draft': () => { store.del(draftKey()); route(); },
+  'att-remove': b => {
+    const ta = $('textarea', b.closest('.editor'));
+    const snip = b.dataset.src;
+    ta.value = ta.value.replace(snip + '\n', '').replace(snip, '');
+    ta.dispatchEvent(new Event('input', { bubbles: true }));
+  },
+  'like-post': async b => {
+    if (!S.me) return openLogin();
+    const num = b.dataset.num;
+    const on = await toggleReaction(`${R()}/issues/${num}/reactions`);
+    if (on) S.liked.add('p' + num); else S.liked.delete('p' + num);
+    setThx(b, on);
+    S.postsAt = 0;
+    return undefined;
+  },
+  'like-comment': async b => {
+    if (!S.me) return openLogin();
+    const id = +b.dataset.id;
+    const on = await toggleReaction(`${R()}/issues/comments/${id}/reactions`);
+    const c = S.cur && S.cur.comments.find(x => x.id === id);
+    if (c) { c.reactions = c.reactions || {}; c.reactions['+1'] = Math.max(0, (c.reactions['+1'] || 0) + (on ? 1 : -1)); }
+    if (on) S.liked.add('c' + id); else S.liked.delete('c' + id);
+    setThx(b, on);
+    return undefined;
+  },
+  reply: () => {
+    if (!S.me) return openLogin();
+    const ta = $('#reply-box textarea');
+    if (ta) { ta.scrollIntoView({ block: 'center' }); ta.focus({ preventScroll: true }); }
+    return undefined;
+  },
+  quote: b => {
+    if (!S.me) return openLogin();
+    const ta = $('#reply-box textarea');
+    if (!ta || !S.cur) return undefined;
+    let who, body;
+    if (b.dataset.id === 'topic') { who = S.cur.p.author; body = S.cur.p.text; }
+    else {
+      const c = S.cur.comments.find(x => x.id === +b.dataset.id);
+      if (!c) return undefined;
+      who = c.user ? c.user.login : 'ghost'; body = c.body || '';
+    }
+    resetEditorTab($('#reply-box'));
+    const text = body.replace(/^\s*>.*$/gm, '').replace(/\n{3,}/g, '\n\n').trim().slice(0, 600);
+    const q = `> **${who}** писал(а):\n` + text.split('\n').map(l => '> ' + l).join('\n') + '\n\n';
+    ta.value = (ta.value.trim() ? ta.value.replace(/\s*$/, '\n\n') : '') + q;
+    ta.dispatchEvent(new Event('input', { bubbles: true }));
+    ta.scrollIntoView({ block: 'center' });
+    ta.focus({ preventScroll: true });
+    ta.setSelectionRange(ta.value.length, ta.value.length);
+    return undefined;
+  },
+  'hide-post': b => hideTopic(+b.dataset.num),
+  'restore-post': async b => { await setState(+b.dataset.num, true, 'Тема'); route(); },
+  'del-section': async b => {
+    if (!window.confirm('Удалить этот раздел? Его темы останутся на форуме в «Разном». Администратор сможет восстановить раздел.')) return;
+    await setState(+b.dataset.num, false, 'Раздел');
+    if (location.hash.startsWith('#/admin')) route(); else location.hash = '#/';
+  },
+  ban: b => setBan(b.dataset.login, true),
+  unban: b => setBan(b.dataset.login, false),
+  'edit-comment': b => {
+    const id = +b.dataset.id;
+    const c = S.cur && S.cur.comments.find(x => x.id === id);
+    const row = b.closest('tr');
+    if (!c || !row || $('.p-edit', row)) return;
+    const cell = $('.p-msg', row);
+    $('.md', cell).hidden = true;
+    $('.p-foot', cell).hidden = true;
+    const f = document.createElement('form');
+    f.className = 'p-edit';
+    f.dataset.form = 'edit-comment';
+    f.dataset.id = id;
+    f.innerHTML = editorHTML(c.body || '', { rows: 6 }) + '<div><button class="btn main">Сохранить</button> <button type="button" class="btn" data-action="cancel-edit">Отмена</button></div>';
+    cell.appendChild(f);
+    updateAttach($('.editor', f));
+    $('textarea', f).focus();
+  },
+  'cancel-edit': () => rerenderComments(),
+  'delete-comment': async b => {
+    const id = +b.dataset.id;
+    if (!window.confirm('Удалить это сообщение? Это нельзя отменить.')) return;
+    await gh(`${R()}/issues/comments/${id}`, { method: 'DELETE' });
+    S.cur.comments = S.cur.comments.filter(c => c.id !== id);
+    S.postsAt = 0;
+    rerenderComments();
+    toast('Сообщение удалено');
+  },
+  'add-cat': () => {
+    const list = $('#cat-list');
+    list.insertAdjacentHTML('beforeend', catRow({ id: '', name: '', desc: '' }));
+    $('.cat-row:last-child .cat-name', list).focus();
+  },
+  'del-cat': b => b.closest('.cat-row').remove(),
+  'cat-up': b => { const r = b.closest('.cat-row'); if (r.previousElementSibling) r.parentNode.insertBefore(r, r.previousElementSibling); },
+  'cat-down': b => { const r = b.closest('.cat-row'); if (r.nextElementSibling) r.parentNode.insertBefore(r.nextElementSibling, r); },
+};
+function setThx(btn, on) {
+  btn.classList.toggle('on', on);
+  btn.textContent = on ? 'Забрать «спасибо»' : 'Спасибо!';
+  const n = btn.parentElement.querySelector('.thx-n');
+  if (n) n.textContent = Math.max(0, (parseInt(n.textContent, 10) || 0) + (on ? 1 : -1));
+}
+
+const FORMS = {
+  search: f => {
+    const q = fv(f, 'q').trim();
+    if (!q) return;
+    const h = '#/search?q=' + encodeURIComponent(q);
+    if (location.hash === h) route(); else location.hash = h;
+  },
+  login: async f => {
+    const token = fv(f, 'token').trim();
+    if (token) await login(token);
+  },
+  post: async f => {
+    if (S.uploading) { toast('Подождите, картинка ещё загружается…', 'err'); return; }
+    const title = fv(f, 'title').trim();
+    const text = $('textarea', f).value.trim();
+    let cat = fv(f, 'cat');
+    if (!title) { toast('Добавьте заголовок темы', 'err'); return; }
+    if (!text) { toast('Напишите текст сообщения', 'err'); return; }
+    if (cat === '__new') {
+      const name = fv(f, 'secname').trim();
+      if (!name) { toast('Введите название нового раздела', 'err'); return; }
+      cat = (await createSection(name, fv(f, 'secdesc').trim())).id;
+    }
+    const num = f.dataset.num;
+    const body = joinMeta({ cat: cat || null }, text);
+    if (num) {
+      await gh(`${R()}/issues/${num}`, { method: 'PATCH', body: { title, body } });
+      S.postsAt = 0;
+      toast('Изменения сохранены');
+      location.hash = '#/p/' + num;
+    } else {
+      const issue = await gh(`${R()}/issues`, { method: 'POST', body: { title, body } });
+      clearTimeout(draftTimer);
+      store.del(draftKey());
+      S.postsAt = 0;
+      toast('Тема создана');
+      location.hash = '#/p/' + issue.number;
+    }
+  },
+  section: async f => {
+    const name = fv(f, 'name').trim();
+    if (!name) return;
+    const s = await createSection(name, fv(f, 'desc').trim());
+    toast(`Раздел «${s.name}» готов`);
+    location.hash = '#/c/' + encodeURIComponent(s.id);
+  },
+  comment: async f => {
+    if (S.uploading) { toast('Подождите, картинка ещё загружается…', 'err'); return; }
+    const ta = $('textarea', f);
+    const body = ta.value.trim();
+    if (!body) { toast('Напишите текст ответа', 'err'); return; }
+    const c = await gh(`${R()}/issues/${f.dataset.num}/comments`, { method: 'POST', accept: FULL, body: { body } });
+    S.cur.comments.push(c);
+    resetEditorTab(f);
+    ta.value = '';
+    ta.dispatchEvent(new Event('input', { bubbles: true }));
+    S.postsAt = 0;
+    rerenderComments();
+    toast('Ответ добавлен');
+    const last = $('#comments tr:last-child');
+    if (last) last.scrollIntoView({ block: 'center' });
+  },
+  'edit-comment': async f => {
+    if (S.uploading) { toast('Подождите, картинка ещё загружается…', 'err'); return; }
+    const id = +f.dataset.id;
+    const body = $('textarea', f).value.trim();
+    if (!body) { toast('Сообщение не может быть пустым', 'err'); return; }
+    const upd = await gh(`${R()}/issues/comments/${id}`, { method: 'PATCH', accept: FULL, body: { body } });
+    S.cur.comments = S.cur.comments.map(c => (c.id === id ? upd : c));
+    rerenderComments();
+    toast('Сохранено');
+  },
+  mod: async f => {
+    const num = +f.dataset.num, act = fv(f, 'act');
+    if (act === 'hide') return hideTopic(num);
+    if (act === 'restore') { await setState(num, true, 'Тема'); return route(); }
+    if (act === 'ban' || act === 'unban') return setBan(S.cur.p.author, act === 'ban');
+    if (MOD[act]) { await MOD[act](num); S.postsAt = 0; return route(); }
+    return undefined;
+  },
+  settings: async f => {
+    if (!amAdmin()) throw new Error('Только для администратора.');
+    const rows = $$('.cat-row', f);
+    const used = new Set(rows.map(r => r.dataset.id).filter(Boolean));
+    const cats = [];
+    rows.forEach((r, i) => {
+      const name = $('.cat-name', r).value.trim();
+      if (!name) return;
+      let id = r.dataset.id;
+      if (!id) { id = slugify(name) || 'cat-' + (i + 1); while (used.has(id) || /^s\d+$/.test(id) || id === 'other') id += '-' + (i + 1); used.add(id); }
+      cats.push({ id, name, desc: $('.cat-desc', r).value.trim() });
+    });
+    const allow = f.elements.namedItem('allowUserSections').checked;
+    await saveConfig({ ...S.cfg, title: fv(f, 'title').trim() || S.cfg.title, description: fv(f, 'description').trim(), allowUserSections: allow, categories: cats }, 'Настройки форума');
+    renderShell();
+    route();
+    toast('Настройки сохранены. У посетителей обновятся примерно через минуту.');
+  },
+  ban: async f => {
+    const login = fv(f, 'login').trim().replace(/^@/, '');
+    if (login) await setBan(login, true);
+  },
+  setup: f => runSetup(f),
+};
+
+/* ---------- установка ---------- */
+function selfSource(title, desc) {
+  const css = document.getElementById('forum-style').textContent;
+  const js = document.getElementById('forum-script').textContent;
+  const open = '<scr' + 'ipt id="forum-script">', close = '</scr' + 'ipt>';
+  return '<!doctype html>\n<html lang="ru">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n'
+    + `<title>${esc(title)}</title>\n<meta name="description" content="${esc(desc || '')}">\n<link rel="icon" href="${FAVICON}">\n`
+    + `<style id="forum-style">${css}</style>\n</head>\n<body>\n<div id="app"></div>\n${open}${js}${close}\n</body>\n</html>\n`;
+}
+function welcomeText(title) {
+  return [
+    `Добро пожаловать на форум **${title}**!`,
+    '',
+    '**Что здесь можно делать:**',
+    '- создавать темы в любом разделе и отвечать в них;',
+    '- создавать **свои разделы на любую тему** — ссылка «Создать раздел» вверху;',
+    '- прикреплять картинки — кнопкой «Картинка…», вставкой из буфера (Ctrl+V) или перетаскиванием;',
+    '- говорить авторам «Спасибо!» — самые популярные темы попадают на главную.',
+    '',
+    'Чтобы писать, нажмите «Вход» вверху страницы и войдите через GitHub.',
+    '',
+    'Пожалуйста, будьте вежливы друг к другу.',
+  ].join('\n');
+}
+function readmeText(cfg, siteUrl) {
+  return [
+    `# ${cfg.title}`, '', cfg.description || '', '',
+    `Форум работает на GitHub Pages: ${siteUrl}`, '',
+    '- Темы и ответы — Issues этого репозитория, «спасибо» — реакции 👍.',
+    '- Разделы участников — issues с пометкой `type: section`.',
+    '- Настройки (название, основные разделы, блокировки) — `forum-config.json`.',
+    '- Код форума — `index.html`.',
+    `- Картинки администратора — ветка \`${cfg.mediaBranch || MEDIA_BRANCH}\`.`, '',
+  ].join('\n');
+}
+async function waitSite(url, ms) {
+  const end = Date.now() + ms;
+  const base = url.replace(/\/?$/, '/');
+  while (Date.now() < end) {
+    try { const r = await fetch(base + 'forum-config.json?t=' + Date.now(), { cache: 'no-store' }); if (r.ok) return true; } catch (e) { /* ещё не готов */ }
+    await sleep(5000);
+  }
+  return false;
+}
+async function runSetup(f) {
+  const token = fv(f, 'token').trim();
+  const title = fv(f, 'title').trim() || 'Мой форум';
+  const description = fv(f, 'description').trim();
+  const repoName = fv(f, 'repo').trim();
+  const cats = parseCats(fv(f, 'cats'));
+  const welcome = f.elements.namedItem('welcome').checked;
+  const allowUserSections = f.elements.namedItem('allowUserSections').checked;
+  if (!token) throw new Error('Вставьте токен GitHub.');
+  if (!/^[A-Za-z0-9._-]{1,100}$/.test(repoName)) throw new Error('Имя репозитория: только латиница, цифры, точка, дефис и подчёркивание.');
+  const log = $('#setup-log'), done = $('#setup-done');
+  log.innerHTML = ''; done.innerHTML = '';
+  const step = text => {
+    const li = document.createElement('li');
+    li.className = 'run'; li.textContent = text; log.appendChild(li);
+    return {
+      ok: t => { li.className = 'ok'; if (t) li.textContent = t; },
+      info: t => { li.className = 'info'; li.textContent = t; },
+      fail: t => { li.className = 'fail'; li.textContent = text.replace(/…$/, '') + ': ' + t; },
+    };
+  };
+  const api = (path, o = {}) => gh(path, { ...o, token });
+  let st;
+  try {
+    st = step('Проверяю токен…');
+    const res = await gh('/user', { token, raw: true });
+    const me = await res.json().catch(() => null);
+    if (!res.ok) throw new GhError(res.status, me, res.headers);
+    const scopes = res.headers.get('x-oauth-scopes');
+    if (scopes !== null && !/(^|[\s,])repo([\s,]|$)/.test(scopes)) throw new Error('у токена нет права «repo». Создайте новый токен (classic) и отметьте галочку repo.');
+    st.ok(`Токен в порядке — вы ${me.login}`);
+
+    st = step(`Создаю репозиторий ${me.login}/${repoName}…`);
+    let repo, existed = false;
+    try {
+      repo = await api('/user/repos', { method: 'POST', body: { name: repoName, description: `${title} — форум на GitHub Pages`, private: false, has_issues: true, has_wiki: false, has_projects: false, auto_init: true } });
+    } catch (e) {
+      if (e.status !== 422) throw e;
+      repo = await api(`/repos/${me.login}/${repoName}`);
+      st.info(`Репозиторий ${repo.full_name} уже существует`);
+      if (!window.confirm(`Репозиторий ${repo.full_name} уже существует. Установить форум в него (или обновить код форума)? Существующие темы и настройки сохранятся.`)) throw new Error('отменено');
+      existed = true;
+    }
+    if (repo.private) throw new Error('репозиторий приватный. Форум должен быть в публичном репозитории, чтобы гости могли его читать.');
+    if (!repo.has_issues) await api(`/repos/${repo.full_name}`, { method: 'PATCH', body: { has_issues: true } });
+    st.ok(existed ? `Использую репозиторий ${repo.full_name}` : `Репозиторий ${repo.full_name} создан`);
+    const owner = repo.owner.login, name = repo.name, branch = repo.default_branch || 'main';
+    const guessUrl = name.toLowerCase() === `${owner.toLowerCase()}.github.io` ? `https://${name.toLowerCase()}/` : `https://${owner.toLowerCase()}.github.io/${name}/`;
+
+    st = step('Сохраняю настройки форума…');
+    let cfg = { version: 2, title, description, owner, repo: name, admin: me.login, mediaBranch: MEDIA_BRANCH, allowUserSections, categories: cats, banned: [], createdAt: new Date().toISOString() };
+    let oldCfg = null;
+    if (existed) {
+      try { oldCfg = JSON.parse(fromB64utf8((await api(`/repos/${owner}/${name}/contents/forum-config.json?ref=${encodeURIComponent(branch)}`)).content)); } catch (e) { oldCfg = null; }
+    }
+    if (oldCfg && oldCfg.owner === owner && oldCfg.repo === name) {
+      cfg = { ...cfg, ...oldCfg };
+      st.ok('Настройки оставлены прежними (их можно менять в «Администрировании»)');
+    } else {
+      if (oldCfg) cfg = { ...cfg, ...oldCfg, owner, repo: name };
+      await putFile({ owner, repo: name, path: 'forum-config.json', content: b64utf8(JSON.stringify(cfg, null, 2) + '\n'), message: 'Настройки форума', branch, token });
+      st.ok('Настройки сохранены');
+    }
+
+    st = step('Публикую код форума…');
+    await putFile({ owner, repo: name, path: 'index.html', content: b64utf8(selfSource(cfg.title, cfg.description)), message: existed ? 'Обновление кода форума' : 'Код форума', branch, token });
+    await putFile({ owner, repo: name, path: '.nojekyll', content: b64utf8('\n'), message: 'Отключить Jekyll', branch, token, keep: true });
+    if (!existed) await putFile({ owner, repo: name, path: 'README.md', content: b64utf8(readmeText(cfg, guessUrl)), message: 'README', branch, token });
+    st.ok('Код форума опубликован');
+
+    st = step('Готовлю хранилище картинок…');
+    await ensureBranch(owner, name, cfg.mediaBranch || MEDIA_BRANCH, token);
+    try { await api(`/repos/${owner}/${name}/labels`, { method: 'POST', body: { name: 'pinned', color: '45678c', description: 'Важная тема форума' } }); } catch (e) { if (e.status !== 422) throw e; }
+    st.ok(`Ветка «${cfg.mediaBranch || MEDIA_BRANCH}» для картинок и метка «pinned» готовы`);
+
+    st = step('Включаю GitHub Pages…');
+    let pages = null;
+    try {
+      pages = await api(`/repos/${owner}/${name}/pages`, { method: 'POST', body: { source: { branch, path: '/' } } });
+    } catch (e) {
+      if (e.status !== 409 && e.status !== 422) throw e;
+      try { pages = await api(`/repos/${owner}/${name}/pages`); } catch (e2) { throw e; }
+      if (pages.build_type === 'workflow' || !pages.source || pages.source.branch !== branch || pages.source.path !== '/') {
+        await api(`/repos/${owner}/${name}/pages`, { method: 'PUT', body: { build_type: 'legacy', source: { branch, path: '/' } } });
+      }
+    }
+    try { pages = await api(`/repos/${owner}/${name}/pages`); } catch (e) { /* адрес угадаем */ }
+    const siteUrl = (pages && pages.html_url) || guessUrl;
+    st.ok(`GitHub Pages включён: ${siteUrl}`);
+
+    if (welcome && !existed) {
+      st = step('Публикую приветственную тему…');
+      const wcat = (cats.find(c => /новост/i.test(c.name)) || cats[0] || {}).id || null;
+      await api(`/repos/${owner}/${name}/issues`, { method: 'POST', body: { title: `Добро пожаловать на форум «${title}»!`, body: joinMeta({ cat: wcat }, welcomeText(title)), labels: ['pinned'] } });
+      st.ok('Приветственная тема опубликована и отмечена как важная');
+    }
+
+    st = step('Жду, пока GitHub опубликует сайт (обычно 1–3 минуты)…');
+    const live = await waitSite(siteUrl, 240000);
+    if (live) st.ok('Сайт опубликован!'); else st.info('GitHub ещё собирает сайт — ссылка заработает через пару минут.');
+
+    done.innerHTML = `<div class="done">
+      <h3>Форум «${esc(cfg.title)}» установлен!</h3>
+      <div>Адрес форума: <a href="${esc(siteUrl)}" target="_blank" rel="noopener"><b>${esc(siteUrl)}</b></a></div>
+      <ol>
+        <li>Откройте форум и нажмите <b>«Вход»</b> вверху.</li>
+        <li>Вставьте <b>этот же токен</b> — вы войдёте как администратор (ссылка «Администрирование» появится в шапке).</li>
+        <li>Отправьте адрес друзьям: читать могут все, писать — любой с аккаунтом GitHub.</li>
+      </ol>
+      <a class="btn main" href="${esc(siteUrl)}" target="_blank" rel="noopener">Перейти на форум</a>
+      <span class="small gray">Репозиторий: <a href="${esc(repo.html_url)}" target="_blank" rel="noopener">${esc(repo.full_name)}</a></span>
+    </div>`;
+    done.scrollIntoView({ block: 'center' });
+  } catch (e) {
+    console.error(e);
+    if (st) st.fail(e.message || String(e)); else toast(e.message || String(e), 'err');
+  }
+}
+function viewSetup(note) {
+  document.title = 'Установка форума';
+  $('#app').innerHTML = `<div id="wrap">
+    <div class="banner"><div class="logo"><span class="logo-title">Установка форума</span><span class="logo-desc">Свой форум на любую тему — бесплатно, на GitHub Pages</span></div></div>
+    <div class="navbar"><span>Мастер установки</span><span class="nav-right">3 шага · около 3 минут</span></div>
+    ${note ? `<div class="notice">${esc(note)}</div>` : ''}
+    <form data-form="setup" autocomplete="off"><table class="tbl form-tbl">
+      <tr><th colspan="2">Шаг 1. Токен GitHub</th></tr>
+      <tr><td colspan="2" class="row-text">Страница сама создаст репозиторий, включит GitHub Pages и опубликует форум. Темы, ответы и «спасибо» хранятся в Issues вашего репозитория, картинки — там же. Администратор — вы.
+        <ol>
+          <li>Откройте <a href="https://github.com/settings/tokens/new?scopes=repo&amp;description=Forum%20admin" target="_blank" rel="noopener"><b>создание токена на GitHub</b></a> — галочка <code>repo</code> уже стоит.</li>
+          <li>Выберите срок действия (Expiration), прокрутите вниз и нажмите <b>Generate token</b>.</li>
+          <li>Скопируйте токен (начинается с <code>ghp_</code>) и вставьте его ниже.</li>
+        </ol></td></tr>
+      <tr><td class="lbl">Токен</td><td><input class="inp mono" type="password" name="token" placeholder="ghp_..." required spellcheck="false" autocomplete="off"></td></tr>
+      <tr><th colspan="2">Шаг 2. Настройки форума</th></tr>
+      <tr><td class="lbl">Название форума</td><td><input class="inp" name="title" value="Мой форум" maxlength="80" required></td></tr>
+      <tr><td class="lbl">Описание</td><td><input class="inp wide" name="description" value="Общаемся на любые темы" maxlength="200"></td></tr>
+      <tr><td class="lbl">Имя репозитория</td><td><input class="inp mono" name="repo" value="forum" maxlength="100" required spellcheck="false"><div class="small gray">Адрес будет: https://ваш-логин.github.io/<b id="repo-preview">forum</b>/</div></td></tr>
+      <tr><td class="lbl">Основные разделы<div class="small gray" style="font-weight:normal;margin-top:4px">по одному в строке:<br>«Название — описание»</div></td><td><textarea class="inp" name="cats" rows="6">${esc(DEFAULT_CATS)}</textarea></td></tr>
+      <tr><td class="lbl">Разделы участников</td><td><label class="check"><input type="checkbox" name="allowUserSections" checked> Участники могут создавать свои разделы на любую тему</label></td></tr>
+      <tr><td class="lbl">Приветствие</td><td><label class="check"><input type="checkbox" name="welcome" checked> Опубликовать приветственную тему</label></td></tr>
+      <tr><th colspan="2">Шаг 3. Установка</th></tr>
+      <tr><td colspan="2" class="actions"><button class="btn main">Установить форум</button></td></tr>
+      <tr><td colspan="2"><ul class="log" id="setup-log"><li class="info">Заполните поля выше и нажмите «Установить форум».</li></ul><div id="setup-done"></div></td></tr>
+    </table></form>
+    <div class="footer">Токен используется только в этой вкладке для запросов к api.github.com и нигде не сохраняется.<br>Уже есть форум? Укажите тот же репозиторий — код обновится, темы и настройки останутся.</div>
+  </div>
+  <div id="toasts"></div>`;
+}
+
+/* ---------- события ---------- */
+document.addEventListener('click', async e => {
+  const t = e.target;
+  if (!(t instanceof Element)) return;
+  const img = t.closest('.md img');
+  if (img) {
+    const a = img.closest('a');
+    const href = a ? a.getAttribute('href') || '' : '';
+    const imageLink = !a || href === img.getAttribute('src') || /camo\.githubusercontent|githubusercontent\.com|\.(png|jpe?g|gif|webp|svg)(\?|$)/i.test(href);
+    if (imageLink) { e.preventDefault(); showImage(img.currentSrc || img.src); return; }
+  }
+  const md = t.closest('[data-md]');
+  if (md) { e.preventDefault(); mdApply($('textarea', md.closest('.editor')), md.dataset.md); return; }
+  const tab = t.closest('.ed-tab');
+  if (tab) { e.preventDefault(); edTab(tab); return; }
+  const a = t.closest('[data-action]');
+  if (!a) return;
+  const fn = ACTIONS[a.dataset.action];
+  if (!fn) return;
+  e.preventDefault();
+  if (a.dataset.busy) return;
+  a.dataset.busy = '1';
+  try { await fn(a, e); } catch (err) { console.error(err); toast(err.message || String(err), 'err'); } finally { delete a.dataset.busy; }
+});
+document.addEventListener('submit', async e => {
+  const f = e.target.closest('form[data-form]');
+  if (!f) return;
+  e.preventDefault();
+  const fn = FORMS[f.dataset.form];
+  if (!fn || f.dataset.busy) return;
+  f.dataset.busy = '1';
+  const btns = $$('button:not([type=button])', f);
+  btns.forEach(b => { b.disabled = true; });
+  try { await fn(f, e); } catch (err) { console.error(err); toast(err.message || String(err), 'err'); } finally { delete f.dataset.busy; btns.forEach(b => { b.disabled = false; }); }
+});
+document.addEventListener('input', e => {
+  const t = e.target;
+  if (!(t instanceof Element)) return;
+  if (t.matches('.editor textarea')) updateAttach(t.closest('.editor'));
+  const pf = t.closest('form[data-form="post"]');
+  if (pf && !pf.dataset.num) saveDraft(pf);
+  if (t.name === 'repo' && t.closest('form[data-form="setup"]')) { const el = $('#repo-preview'); if (el) el.textContent = t.value.trim() || 'forum'; }
+});
+document.addEventListener('change', e => {
+  const t = e.target;
+  if (t instanceof HTMLInputElement && t.type === 'file' && t.closest('.editor')) {
+    const files = Array.from(t.files || []);
+    t.value = '';
+    if (files.length) handleFiles(t.closest('.editor'), files);
+  }
+  if (t instanceof HTMLSelectElement && t.name === 'cat') {
+    const box = t.parentElement.querySelector('.newsec');
+    if (box) { box.hidden = t.value !== '__new'; if (!box.hidden) $('input', box).focus(); }
+  }
+});
+document.addEventListener('paste', e => {
+  const ta = e.target instanceof Element && e.target.closest('.editor textarea');
+  if (!ta) return;
+  const files = Array.from((e.clipboardData && e.clipboardData.files) || []).filter(f => f.type.startsWith('image/'));
+  if (files.length) { e.preventDefault(); handleFiles(ta.closest('.editor'), files); }
+});
+document.addEventListener('dragover', e => {
+  const ed = e.target instanceof Element && e.target.closest('.editor');
+  if (ed && e.dataTransfer && Array.from(e.dataTransfer.types).includes('Files')) { e.preventDefault(); ed.classList.add('drag'); }
+});
+document.addEventListener('dragleave', e => {
+  const ed = e.target instanceof Element && e.target.closest('.editor');
+  if (ed && !ed.contains(e.relatedTarget)) ed.classList.remove('drag');
+});
+document.addEventListener('drop', e => {
+  const ed = e.target instanceof Element && e.target.closest('.editor');
+  if (!ed) return;
+  e.preventDefault();
+  ed.classList.remove('drag');
+  const files = Array.from(e.dataTransfer.files || []).filter(f => f.type.startsWith('image/'));
+  if (files.length) handleFiles(ed, files);
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeModal(); return; }
+  const ta = e.target instanceof Element && e.target.closest('.editor textarea');
+  if (!ta) return;
+  const mod = e.ctrlKey || e.metaKey;
+  if (mod && e.key === 'Enter' && ta.form) { e.preventDefault(); ta.form.requestSubmit(); }
+  else if (mod && (e.key === 'b' || e.key === 'и')) { e.preventDefault(); mdApply(ta, 'bold'); }
+  else if (mod && (e.key === 'i' || e.key === 'ш')) { e.preventDefault(); mdApply(ta, 'italic'); }
+});
+
+/* ---------- запуск ---------- */
+function normalizeCfg(cfg) {
+  cfg.title = cfg.title || 'Форум';
+  cfg.categories = Array.isArray(cfg.categories) ? cfg.categories.filter(c => c && c.id && c.name) : [];
+  cfg.banned = Array.isArray(cfg.banned) ? cfg.banned.filter(Boolean) : [];
+  if (cfg.allowUserSections === undefined) cfg.allowUserSections = true;
+  return cfg;
+}
+async function boot() {
+  const params = new URLSearchParams(location.search);
+  if (location.protocol === 'file:' || params.has('setup')) { viewSetup(); return; }
+  let cfg = null;
+  try {
+    const r = await fetch('forum-config.json?t=' + Date.now(), { cache: 'no-store' });
+    if (r.ok) cfg = await r.json();
+  } catch (e) { cfg = null; }
+  if (!cfg || !cfg.owner || !cfg.repo) { viewSetup('Рядом с этой страницей нет forum-config.json — похоже, форум ещё не установлен. Заполните форму ниже.'); return; }
+  S.cfg = normalizeCfg(cfg);
+  renderShell();
+  setMain(loadingTable());
+  const tok = store.get(tokKey());
+  if (tok) {
+    try { await login(tok, true); }
+    catch (e) { if (e.status === 401) store.del(tokKey()); }
+  }
+  window.addEventListener('hashchange', () => { window.scrollTo(0, 0); route(); });
+  route();
+}
+boot();
+})();
+</script>
+</body>
+</html>
