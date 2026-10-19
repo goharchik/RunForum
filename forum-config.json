@@ -1,0 +1,39 @@
+{
+  "version": 2,
+  "title": "RunForum",
+  "description": "Общаемся на любые темы",
+  "owner": "goharchik",
+  "repo": "RunForum",
+  "admin": "goharchik",
+  "mediaBranch": "media",
+  "allowUserSections": true,
+  "categories": [
+    {
+      "id": "obschenie",
+      "name": "Общение",
+      "desc": "разговоры обо всём"
+    },
+    {
+      "id": "novosti",
+      "name": "Новости",
+      "desc": "главное на форуме"
+    },
+    {
+      "id": "voprosy-i-otvety",
+      "name": "Вопросы и ответы",
+      "desc": "спросите сообщество"
+    },
+    {
+      "id": "tvorchestvo",
+      "name": "Творчество",
+      "desc": "покажите свои работы"
+    },
+    {
+      "id": "flud",
+      "name": "Флуд",
+      "desc": "болтовня без темы"
+    }
+  ],
+  "banned": [],
+  "createdAt": "2026-10-19T09:27:05.969Z"
+}
